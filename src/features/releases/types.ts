@@ -6,3 +6,10 @@ export type ExtractReleaseNotesOptions = {
   changelogPath?: string;
   outputPath?: string;
 };
+
+export type ReleaseTypeResult = {
+  normalized: string;
+  version: string;
+  IS_PRERELEASE: boolean;
+  releaseTag: string;
+};
