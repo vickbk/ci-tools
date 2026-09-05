@@ -86,20 +86,20 @@
 
 ### Phase 4: Pre-Release Packaging Validation & Dry-Run Audit
 
-- [ ] **Task 8: Execute Dry-Run Tarball Inspection (`pnpm pack`)**
-- **Status**: ⏳ Pending
+- [x] **Task 8: Execute Dry-Run Tarball Inspection (`pnpm pack`)**
+- **Status**: ✅ Completed
 - **Target**: 2026-09-10
 - **Description**: Run a package tarball dry-run to confirm that raw `src/`, `tests/`, and internal configurations are excluded from the published payload.
 - **Steps**:
-- [ ] Execute `pnpm pack --dry-run` and inspect the output file list.
-- [ ] Confirm the tarball contains **only** `dist/` build outputs, `package.json`, `README.md`, `LICENSE`, and `CHANGELOG.md`.
-- [ ] Verify that no `.ts` source files or test files leak into the package tarball.
+  - [x] Execute `pnpm pack --dry-run` and inspect the output file list.
+  - [x] Confirm that the tarball contains **only** `dist/` build outputs, `package.json`, `README.md`, `LICENSE`, and `CHANGELOG.md`.
+  - [x] Verify that no `.ts` source files or test files leak into the package tarball.
 
-- [ ] **Task 9: End-to-End Consumer Import Verification**
-- **Status**: ⏳ Pending
+- [x] **Task 9: End-to-End Consumer Import Verification**
+- **Status**: ✅ Completed
 - **Target**: 2026-09-10
 - **Description**: Test installing and importing the packed `.tgz` file into a clean temporary project to verify type resolution and ESM/CJS runtime compatibility.
 - **Steps**:
-- [ ] Build the package tarball using `pnpm pack`.
-- [ ] Install the packed tarball in a temporary directory (`pnpm add /path/to/vickbk-ci-tools-0.1.0.tgz`).
-- [ ] Test importing from `@vickbk/ci-tools/docs`, `@vickbk/ci-tools/github`, and `@vickbk/ci-tools/core` in both ESM and CJS Node.js scripts to confirm zero runtime or type errors.
+  - [x] Build the package tarball using `pnpm pack`.
+  - [x] Install the packed tarball in a temporary directory (`pnpm add /path/to/vickbk-ci-tools-0.1.0.tgz`).
+  - [x] Test importing from `@vickbk/ci-tools/docs`, `@vickbk/ci-tools/github`, and `@vickbk/ci-tools/core` in both ESM and CJS Node.js scripts to confirm zero runtime or type errors.
