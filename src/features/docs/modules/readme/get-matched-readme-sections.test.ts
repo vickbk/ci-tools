@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { DocumentationContract } from "@/shared/types";
 import { getMatchedReadmeSections } from "./get-matched-readme-sections";
-import { DocumentationContract } from "./types";
 
 const contract: DocumentationContract = {
   packageName: "demo-package",

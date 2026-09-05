@@ -1,5 +1,5 @@
+import { DocumentationContract } from "@/shared/types";
 import { normalizeHeadingText } from "../headings/normalize-heading-text";
-import { DocumentationContract } from "../types";
 
 /**
  * Resolves a README heading to the matching contract section definition.

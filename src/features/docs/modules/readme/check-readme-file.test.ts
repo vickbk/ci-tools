@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as filesModule from "@/shared/files";
+import { DocumentationContract } from "@/shared/types";
 import { checkReadmeFile } from "./check-readme-file";
 import { ReadmeValidationError } from "./errors/readme-validation-error";
-import { DocumentationContract } from "./types";
 
 const mockContract: DocumentationContract = {
   packageName: "demo-package",

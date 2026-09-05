@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DocumentationContract } from "../types";
+import { DocumentationContract } from "@/shared/types";
 import { matchHeadingToSection } from "./match-heading-to-section";
 
 const contract: DocumentationContract = {

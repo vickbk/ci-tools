@@ -1,6 +1,7 @@
+import { DocumentationContract } from "@/shared/types";
 import { getContractSection } from "../contract";
 import type { MatchedReadmeSection, ReadmeSectionDiagnostic } from "../types";
-import { DocumentationContract } from "../types";
+
 import { getPreviousAndCurrentSection } from "./get-previous-and-current-section";
 
 /**

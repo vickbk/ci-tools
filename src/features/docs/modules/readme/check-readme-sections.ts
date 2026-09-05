@@ -1,10 +1,10 @@
+import { DocumentationContract } from "@/shared/types";
 import { getMatchedReadmeSections } from "./get-matched-readme-sections";
 import {
   findMissingSectionDiagnostics,
   findOrderingViolationDiagnostics,
 } from "./sections";
 import type { ReadmeSectionValidationResult } from "./types";
-import { DocumentationContract } from "./types";
 
 /**
  * Validates a README body against a documentation contract.

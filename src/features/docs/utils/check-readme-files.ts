@@ -1,6 +1,7 @@
 // scripts/features/docs/utils/orchestration/check-readme-files.ts
+import { DocumentationContract } from "@/shared/types";
 import type { FileValidationResult } from "../modules/readme";
-import { checkReadmeFile, DocumentationContract } from "../modules/readme";
+import { checkReadmeFile } from "../modules/readme";
 
 /**
  * Validates multiple README targets in parallel using a path-to-contract map.

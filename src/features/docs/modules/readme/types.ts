@@ -1,25 +1,5 @@
-type DocumentationRequirement = {
-  codeBlock?: boolean;
-  packageManagerCommands?: boolean;
-  publicEntryPoints?: boolean;
-  wcagReference?: boolean;
-};
+import { DocumentationContract } from "@/shared/types";
 
-type DocumentationSection = {
-  id: string;
-  heading: string;
-  required: boolean;
-  aliases?: string[];
-  requirements?: DocumentationRequirement;
-};
-
-export type DocumentationContract = {
-  packageName: string;
-  sections: DocumentationSection[];
-  preferredSectionOrder: string[];
-  requiredSectionIds: string[];
-  recommendedSectionIds: string[];
-};
 /**
  * A single validation issue discovered while checking README section completeness or
  * ordering against the documentation contract.

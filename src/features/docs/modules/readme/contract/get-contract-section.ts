@@ -1,4 +1,4 @@
-import { DocumentationContract } from "../types";
+import { DocumentationContract } from "@/shared/types";
 
 /**
  * Finds the contract entry for a specific section id.

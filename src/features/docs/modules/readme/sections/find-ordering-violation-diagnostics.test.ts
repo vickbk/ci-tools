@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DocumentationContract } from "../types";
+import { DocumentationContract } from "@/shared/types";
 import { findOrderingViolationDiagnostics } from "./find-ordering-violation-diagnostics";
 
 const contract: DocumentationContract = {
