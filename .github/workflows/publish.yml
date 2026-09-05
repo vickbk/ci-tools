@@ -58,9 +58,9 @@ jobs:
         run: pnpm release-tag
 
       - name: Publish package
-        run: pnpm publish --access public --tag ${{ env.DIST_TAG }} --provenance --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish --access public --tag ${{ env.DIST_TAG }} --provenance --no-git-checks
 
       - name: Extract Release Notes from CHANGELOG.md
         run: pnpm release-note

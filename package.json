@@ -2,6 +2,9 @@
   "name": "@vickbk/ci-tools",
   "version": "0.1.0",
   "description": "Programmatic CI workflow utilities for documentation, releases, GitHub Actions, and Vitest reporting.",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "license": "MIT",
   "repository": {
