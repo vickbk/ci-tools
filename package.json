@@ -30,10 +30,10 @@
     "prepublishOnly": "pnpm typecheck && pnpm build",
     "release-note": "tsx ./src/bin/extract-release-note.ts",
     "release-tag": "tsx ./src/bin/extract-version-tag.ts",
-    "comment": "tsx ./src/bin/post-vitest-coverage.ts",
+    "test-comment": "tsx ./src/bin/post-vitest-coverage.ts",
     "coverage-summary": "tsx ./src/bin/coverage-summary.ts",
     "readme-check": "tsx ./src/bin/documentation/readme-check",
-    "post-readme-comment": "tsx ./src/bin/documentation/post-readme-comment"
+    "readme-comment": "tsx ./src/bin/documentation/post-readme-comment"
   },
   "engines": {
     "node": ">=20"
