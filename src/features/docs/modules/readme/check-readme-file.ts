@@ -1,5 +1,5 @@
 // scripts/features/docs/utils/orchestration/check-readme-file.ts
-import { readTextFile } from "@/shared/files";
+import { readTextFileAsync } from "@/shared/files";
 import { checkReadmeSections } from "./check-readme-sections";
 import { ReadmeValidationError } from "./errors/readme-validation-error";
 import type { FileValidationResult, ReadmeTarget } from "./types";
@@ -20,7 +20,7 @@ export async function checkReadmeFile({
   contract,
 }: ReadmeTarget): Promise<FileValidationResult> {
   try {
-    const content: string = await readTextFile(path);
+    const content: string = await readTextFileAsync({ filePath: path });
     const result = checkReadmeSections(content, contract);
 
     if (!result.isValid) {

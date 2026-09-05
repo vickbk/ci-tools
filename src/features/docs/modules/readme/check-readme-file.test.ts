@@ -33,7 +33,7 @@ describe("checkReadmeFile", () => {
       ].join("\n");
 
       const spy = vi
-        .spyOn(filesModule, "readTextFile")
+        .spyOn(filesModule, "readTextFileAsync")
         .mockResolvedValue(validMarkdown);
 
       const response = await checkReadmeFile({
@@ -42,7 +42,7 @@ describe("checkReadmeFile", () => {
       });
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith("./README.md");
+      expect(spy).toHaveBeenCalledWith({ filePath: "./README.md" });
       expect(response.error).toBeUndefined();
       expect(response).toEqual({
         path: "./README.md",
@@ -58,7 +58,9 @@ describe("checkReadmeFile", () => {
     it("returns { path, error } with ReadmeValidationError when sections are missing", async () => {
       const invalidMarkdown = "# Project Title\n\n## Quick Start";
 
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue(invalidMarkdown);
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(
+        invalidMarkdown,
+      );
 
       const response = await checkReadmeFile({
         path: "./README.md",
@@ -90,7 +92,7 @@ describe("checkReadmeFile", () => {
         "## Quick Start",
       ].join("\n");
 
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue(
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(
         outOfOrderMarkdown,
       );
 
@@ -115,7 +117,7 @@ describe("checkReadmeFile", () => {
       const ioError = new Error(
         '[IO Error] Failed to read "./missing.md": ENOENT: no such file or directory',
       );
-      vi.spyOn(filesModule, "readTextFile").mockRejectedValue(ioError);
+      vi.spyOn(filesModule, "readTextFileAsync").mockRejectedValue(ioError);
 
       const response = await checkReadmeFile({
         path: "./missing.md",
@@ -130,7 +132,7 @@ describe("checkReadmeFile", () => {
     });
 
     it("captures non-Error primitive rejections into the error property", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockRejectedValue(
+      vi.spyOn(filesModule, "readTextFileAsync").mockRejectedValue(
         "Disk read error",
       );
 
@@ -148,7 +150,7 @@ describe("checkReadmeFile", () => {
 
   describe("Edge Cases", () => {
     it("handles completely empty file content by returning a ReadmeValidationError", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue("");
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue("");
 
       const response = await checkReadmeFile({
         path: "./EMPTY.md",

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { ReadTextFileOptions } from "../types";
+import { ReadTextFileOptions } from "../../types";
 import { readTextFileAsync } from "./read-text-file-async";
 
 /**

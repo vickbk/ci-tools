@@ -1,27 +1,16 @@
 import fs from "node:fs/promises";
-import path from "node:path";
-import { ReadTextFileOptions } from "../types";
+import { ReadTextFileOptions } from "../../types";
+import { getFullPath } from "./get-fullpath";
 
 /**
  * Asynchronously reads a text file, enforcing path bounds (if baseDir is provided)
  * and wrapping I/O errors with original cause preservation.
  */
 export async function readTextFileAsync({
-  filePath,
-  baseDir,
   encoding = "utf8",
+  ...options
 }: ReadTextFileOptions): Promise<string> {
-  const fullPath = baseDir
-    ? path.resolve(baseDir, filePath)
-    : path.resolve(filePath);
-
-  if (baseDir) {
-    const resolvedBase = path.resolve(baseDir);
-    const relative = path.relative(resolvedBase, fullPath);
-    if (relative.startsWith("..") || path.isAbsolute(relative)) {
-      throw new Error(`Access denied: Target path outside "${resolvedBase}"`);
-    }
-  }
+  const fullPath = getFullPath(options);
 
   try {
     return await fs.readFile(fullPath, { encoding });

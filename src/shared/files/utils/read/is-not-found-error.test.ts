@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isNotFoundError } from "./is-not-found-error";
+import { isNotFoundError } from "../read/is-not-found-error";
 
 describe("isNotFoundError", () => {
   describe("Non-Error Primitives & Plain Objects", () => {

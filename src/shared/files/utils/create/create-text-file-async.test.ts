@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { createTextFileAsync } from "./create-text-file-async";
+import { createTextFileAsync } from "../create/create-text-file-async";
 
 describe("createTextFileAsync", () => {
   let tempDir: string;

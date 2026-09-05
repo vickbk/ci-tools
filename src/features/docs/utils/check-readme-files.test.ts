@@ -36,8 +36,8 @@ describe("checkReadmeFiles", () => {
   describe("Success Scenarios & Order Preservation", () => {
     it("returns results in the exact key insertion order regardless of async resolution speed", async () => {
       // Simulate slow reading for the first file and fast reading for the second
-      vi.spyOn(filesModule, "readTextFile").mockImplementation(
-        async (filePath) => {
+      vi.spyOn(filesModule, "readTextFileAsync").mockImplementation(
+        async ({ filePath }) => {
           if (filePath.includes("first")) {
             await new Promise((resolve) => setTimeout(resolve, 50));
             return "# Project Title\n\n## Quick Start\n\n## License";
@@ -61,8 +61,8 @@ describe("checkReadmeFiles", () => {
       expect(results.every((r) => r.result?.isValid === true)).toBe(true);
     });
 
-    it("returns an empty array without calling readTextFile when passed an empty object", async () => {
-      const spy = vi.spyOn(filesModule, "readTextFile");
+    it("returns an empty array without calling readTextFileAsync when passed an empty object", async () => {
+      const spy = vi.spyOn(filesModule, "readTextFileAsync");
       const results = await checkReadmeFiles({});
 
       expect(results).toEqual([]);
@@ -70,8 +70,8 @@ describe("checkReadmeFiles", () => {
     });
 
     it("handles multiple targets running against different contract requirements", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockImplementation(
-        async (filePath) => {
+      vi.spyOn(filesModule, "readTextFileAsync").mockImplementation(
+        async ({ filePath }) => {
           if (filePath.includes("minimal")) {
             return "# Project Title";
           }
@@ -98,7 +98,7 @@ describe("checkReadmeFiles", () => {
 
   describe("AggregateError Aggregation & Error Filtering", () => {
     it("throws an AggregateError with a single error when exactly one target fails", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue(
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(
         "# Project Title",
       ); // Fails strict contract
 
@@ -124,7 +124,7 @@ describe("checkReadmeFiles", () => {
     });
 
     it("collects and aggregates every error when ALL targets fail validation", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue(""); // Fails all contracts
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(""); // Fails all contracts
 
       const targets = {
         "./pkg-1/README.md": mockContractStrict,
@@ -159,8 +159,8 @@ describe("checkReadmeFiles", () => {
     });
 
     it("handles a combination of ReadmeValidationErrors, System I/O Errors, and primitive rejections", async () => {
-      vi.spyOn(filesModule, "readTextFile").mockImplementation(
-        async (filePath) => {
+      vi.spyOn(filesModule, "readTextFileAsync").mockImplementation(
+        async ({ filePath }) => {
           if (filePath.includes("missing")) {
             throw new Error("ENOENT: file not found");
           }
@@ -208,7 +208,9 @@ describe("checkReadmeFiles", () => {
   describe("Edge Cases & Path Variations", () => {
     it("handles target paths containing spaces, deep relative paths, or unicode characters", async () => {
       const validContent = "# Project Title\n\n## Quick Start\n\n## License";
-      vi.spyOn(filesModule, "readTextFile").mockResolvedValue(validContent);
+      vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(
+        validContent,
+      );
 
       const targets = {
         "./nested/folder with spaces/README.md": mockContractStrict,
@@ -229,8 +231,8 @@ describe("checkReadmeFiles", () => {
       const passingCount = 20;
       const failingIndex = 12;
 
-      vi.spyOn(filesModule, "readTextFile").mockImplementation(
-        async (filePath) => {
+      vi.spyOn(filesModule, "readTextFileAsync").mockImplementation(
+        async ({ filePath }) => {
           if (filePath.includes(`pkg-${failingIndex}`)) {
             return "# Project Title"; // Invalid
           }
