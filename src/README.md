@@ -5,7 +5,7 @@ This directory contains the repository's automation and workflow helpers for rel
 ## Architecture map
 
 ```text
-scripts/
+src/
 ├── bin/                     # CLI entrypoints for workflow execution
 ├── config/                  # Environment validation and runtime config
 ├── core/
