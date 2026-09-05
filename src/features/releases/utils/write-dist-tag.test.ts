@@ -1,4 +1,4 @@
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as githubEnvModule from "@/core/github";
 import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

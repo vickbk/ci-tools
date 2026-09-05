@@ -1,7 +1,7 @@
 import process from "node:process";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 
 const docsModuleMock = vi.hoisted(() => ({
   checkReadmeFiles: vi.fn(),

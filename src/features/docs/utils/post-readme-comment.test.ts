@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import { config } from "@/config";
 import { getCommentWithId, saveComment } from "@/core/github";
 import { getErrorLogContent } from "../modules/readme";

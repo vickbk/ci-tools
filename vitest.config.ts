@@ -7,7 +7,7 @@ export default defineConfig({
     globals: true,
     alias: {
       "@": path.resolve(import.meta.dirname, "./src/"),
-      "#tests": path.resolve(import.meta.dirname, "./tests/"),
+      "#": path.resolve(import.meta.dirname, "./"),
     },
     exclude: ["**/node_modules/**", "**/dist/**"],
     coverage: {

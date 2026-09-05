@@ -44,31 +44,39 @@
 
 ---
 
-### Phase 3: Documentation, Usage Examples & JSDoc Annotations
+### Phase 3: Documentation Contracts, READMEs & Public JSDoc
 
-- [ ] **Task 5: Rewrite Root `README.md` for External Consumers**
+- [x] **Task 5: Define README Documentation Contracts & Wire Validation**
+- **Status**: ✅ Completed
+- **Target**: 2026-09-09
+- **Description**: Define `DocumentationContract` configurations for the root and all subpath entrypoints (`./core`, `./docs`, `./github`, `./releases`, `./vitest`) in code, and register them in the `checkReadmeFiles` / `bin/readme-check` task runner.
+- **Steps**:
+  - [x] Define contract objects matching `DocumentationContract` for `./` and each subpath entrypoint, setting required section IDs, heading aliases, preferred section order, and `DocumentationRequirement` flags (e.g., `packageManagerCommands`, `publicEntryPoints`).
+  - [x] Wire contract configurations into `bin/readme-check` so running `pnpm readme-check` validates all entrypoint READMEs.
+  - [x] Run `pnpm readme-check` to verify the runner executes contract validation across all target paths.
+
+- [ ] **Task 6: Author Root & Subpath READMEs to Satisfy Contracts**
 - **Status**: ⏳ Pending
 - **Target**: 2026-09-09
-- **Description**: Create a comprehensive consumer-facing root `README.md` detailing installation, package architecture, subpath imports, and code examples for every subpath export.
+- **Description**: Write consumer-facing `README.md` files for the root package and subpaths to satisfy their defined `DocumentationContract` rules.
 - **Steps**:
-- [ ] Add installation instructions using `pnpm add -D @vickbk/ci-tools` / `npm install -D @vickbk/ci-tools`.
-- [ ] Add a Subpath Architecture table mapping each export path (`/core`, `/docs`, `/github`, `/releases`, `/vitest`) to its purpose.
-- [ ] Include runnable JavaScript/TypeScript usage snippets for every subpath import.
+  - [ ] Write root `README.md` with installation commands, architecture summary, subpath table, and runnable examples.
+  - [ ] Ensure all required sections, headings, code blocks, and package manager commands match their contracts.
+  - [ ] Run `pnpm readme-check` and confirm 0 contract validation failures.
 
-- [ ] **Task 6: Document CLI Execution Boundaries & Enrich Public JSDoc**
+- [ ] **Task 7: Document CLI Execution Boundaries & Enrich Public JSDoc**
 - **Status**: ⏳ Pending
 - **Target**: 2026-09-09
-- **Description**: Clearly document the boundary between pure SDK utilities and process-aware CLI lifecycle helpers (`runTask`, `handleFatalError`), and add JSDoc annotations to public barrel functions.
+- **Description**: Document the boundary between pure SDK utilities and process-aware CLI lifecycle helpers, and add JSDoc annotations to public barrel functions.
 - **Steps**:
-- [ ] Add explicit JSDoc annotations to `runTask` and `handleFatalError` stating they are CLI lifecycle orchestrators that read `process.argv` and manage process termination.
-- [ ] Add JSDoc comments (`@param`, `@returns`, `@throws`) across all exported functions in public barrel (`index.ts`) files.
-- [ ] Document the CLI execution boundary in `README.md` to clarify that `bin/` files in host repositories act as script adapters over the programmatic library.
+  - [ ] Add explicit JSDoc annotations to `runTask` and `handleFatalError` stating they are CLI orchestrators managing process exit codes.
+  - [ ] Add JSDoc comments (`@param`, `@returns`, `@throws`) across all exported functions in public barrel (`index.ts`) files.
 
 ---
 
 ### Phase 4: Pre-Release Packaging Validation & Dry-Run Audit
 
-- [ ] **Task 7: Execute Dry-Run Tarball Inspection (`pnpm pack`)**
+- [ ] **Task 8: Execute Dry-Run Tarball Inspection (`pnpm pack`)**
 - **Status**: ⏳ Pending
 - **Target**: 2026-09-10
 - **Description**: Run a package tarball dry-run to confirm that raw `src/`, `tests/`, and internal configurations are excluded from the published payload.
@@ -77,7 +85,7 @@
 - [ ] Confirm the tarball contains **only** `dist/` build outputs, `package.json`, `README.md`, `LICENSE`, and `CHANGELOG.md`.
 - [ ] Verify that no `.ts` source files or test files leak into the package tarball.
 
-- [ ] **Task 8: End-to-End Consumer Import Verification**
+- [ ] **Task 9: End-to-End Consumer Import Verification**
 - **Status**: ⏳ Pending
 - **Target**: 2026-09-10
 - **Description**: Test installing and importing the packed `.tgz` file into a clean temporary project to verify type resolution and ESM/CJS runtime compatibility.

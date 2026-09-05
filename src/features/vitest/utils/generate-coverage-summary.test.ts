@@ -1,4 +1,4 @@
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as coverageModule from "@/core/github";
 import fs from "node:fs";
 import path from "node:path";

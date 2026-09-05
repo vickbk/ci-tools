@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as envModule from "../modules/env";
 import * as headerModule from "./get-headers";
 import { saveComment } from "./save-comment";

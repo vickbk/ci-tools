@@ -1,7 +1,7 @@
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as filesModule from "@/shared/files";
 import { README_ERROR_LOG_FILE } from "./config";
 import { getErrorLogContent } from "./get-error-log-content";

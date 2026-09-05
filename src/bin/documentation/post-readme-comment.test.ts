@@ -2,7 +2,7 @@ import path from "node:path";
 import process from "node:process";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 
 describe("postReadmeComment Runner Entrypoint", () => {
   const originalArgv = process.argv;

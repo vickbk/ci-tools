@@ -1,4 +1,4 @@
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as githubApi from "@/core/github";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as vitest from "./post-coverage-comment";

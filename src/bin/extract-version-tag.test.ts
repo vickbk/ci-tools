@@ -1,4 +1,4 @@
-import { shutConsole } from "#tests/console";
+import { shutConsole } from "#/tests/console";
 import * as releasesModule from "@/features/releases";
 import process from "node:process";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
