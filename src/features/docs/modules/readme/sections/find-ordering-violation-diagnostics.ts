@@ -1,6 +1,7 @@
 import { getContractSection } from "../contract";
 import type { MatchedReadmeSection, ReadmeSectionDiagnostic } from "../types";
 import { DocumentationContract } from "../types";
+import { getPreviousAndCurrentSection } from "./get-previous-and-current-section";
 
 /**
  * Detects ordering violations between matched README sections and the contract.
@@ -21,18 +22,14 @@ export function findOrderingViolationDiagnostics(
   const diagnostics: ReadmeSectionDiagnostic[] = [];
 
   for (let index = 1; index < matchedSections.length; index += 1) {
-    const previousSection = matchedSections[index - 1];
-    const currentSection = matchedSections[index];
-    const previousIndex = orderIndex.get(previousSection.id);
-    const currentIndex = orderIndex.get(currentSection.id);
+    const { shouldSkip, previousSection, currentSection } =
+      getPreviousAndCurrentSection({
+        index,
+        matchedSections,
+        orderIndex,
+      });
 
-    if (
-      previousIndex === undefined ||
-      currentIndex === undefined ||
-      currentIndex >= previousIndex
-    ) {
-      continue;
-    }
+    if (shouldSkip) continue;
 
     const previousContract = getContractSection(previousSection.id, contract);
     const currentContract = getContractSection(currentSection.id, contract);
