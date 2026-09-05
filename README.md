@@ -25,6 +25,15 @@ Key benefits:
 - **CI utility toolkit**: use zero-dependency file and path helpers for reliable
   pipeline input and output handling.
 
+For detailed APIs, environment requirements, and workflow-specific examples,
+see the dedicated module READMEs:
+
+- [Core](src/core/README.md)
+- [Docs](src/features/docs/README.md)
+- [GitHub](src/core/github/README.md)
+- [Releases](src/features/releases/README.md)
+- [Vitest](src/features/vitest/README.md)
+
 ## Quick Start
 
 Install the package and run a README contract check from a workflow script:
