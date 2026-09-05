@@ -3,14 +3,62 @@
 Programmatic CI utilities for documentation contracts, release metadata,
 GitHub Actions integration, and Vitest coverage reporting.
 
-The package is intentionally SDK-only. Repository-specific contracts,
-environment loading, command-line parsing, and executable workflow adapters
-remain in the consuming repository.
+## Overview
 
-## Subpath exports
+`@vickbk/ci-tools` provides small, composable helpers for CI repositories. The
+package keeps domain logic reusable while leaving workflow-specific orchestration
+and process lifecycle decisions to the consuming repository.
 
-- `@vickbk/ci-tools/core`
-- `@vickbk/ci-tools/docs`
-- `@vickbk/ci-tools/github`
-- `@vickbk/ci-tools/releases`
-- `@vickbk/ci-tools/vitest`
+## Installation
+
+```bash
+pnpm add -D @vickbk/ci-tools
+```
+
+## Subpath Exports
+
+| Import path                 | Purpose                                        |
+| --------------------------- | ---------------------------------------------- |
+| `@vickbk/ci-tools/core`     | Error handling and shared workflow primitives  |
+| `@vickbk/ci-tools/docs`     | README contract validation and reporting       |
+| `@vickbk/ci-tools/github`   | GitHub Actions environment and comment helpers |
+| `@vickbk/ci-tools/releases` | Release notes and npm dist-tag helpers         |
+| `@vickbk/ci-tools/vitest`   | Coverage summaries and pull-request comments   |
+
+## Usage
+
+The subpaths are independently importable from ESM TypeScript or JavaScript:
+
+```ts
+import { checkReadmeFiles } from "@vickbk/ci-tools/docs";
+import { getGithubParams } from "@vickbk/ci-tools/github";
+import { extractReleaseNotes } from "@vickbk/ci-tools/releases";
+import { generateCoverageSummary } from "@vickbk/ci-tools/vitest";
+
+await checkReadmeFiles({});
+const github = getGithubParams();
+const notes = extractReleaseNotes({ versionTag: "1.2.3" });
+generateCoverageSummary();
+console.log({ github, notes });
+```
+
+The core entrypoint exposes process-aware task orchestration for repository
+scripts:
+
+```ts
+import { runTask } from "@vickbk/ci-tools/core";
+
+await runTask("validate", async () => {
+  // Run repository-specific validation here.
+});
+```
+
+## Architecture
+
+The public package is SDK-oriented. The `core`, `docs`, `github`, `releases`,
+and `vitest` entrypoints contain reusable functions and types. The repository's
+`src/bin` scripts remain process-aware adapters for CI execution.
+
+## License
+
+MIT

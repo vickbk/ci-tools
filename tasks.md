@@ -55,14 +55,14 @@
   - [x] Wire contract configurations into `bin/readme-check` so running `pnpm readme-check` validates all entrypoint READMEs.
   - [x] Run `pnpm readme-check` to verify the runner executes contract validation across all target paths.
 
-- [ ] **Task 6: Author Root & Subpath READMEs to Satisfy Contracts**
-- **Status**: ⏳ Pending
+- [x] **Task 6: Author Root & Subpath READMEs to Satisfy Contracts**
+- **Status**: ✅ Completed
 - **Target**: 2026-09-09
 - **Description**: Write consumer-facing `README.md` files for the root package and subpaths to satisfy their defined `DocumentationContract` rules.
 - **Steps**:
-  - [ ] Write root `README.md` with installation commands, architecture summary, subpath table, and runnable examples.
-  - [ ] Ensure all required sections, headings, code blocks, and package manager commands match their contracts.
-  - [ ] Run `pnpm readme-check` and confirm 0 contract validation failures.
+  - [x] Write root `README.md` with installation commands, architecture summary, subpath table, and runnable examples.
+  - [x] Ensure all required sections, headings, code blocks, and package manager commands match their contracts.
+  - [x] Run `pnpm readme-check` and confirm 0 contract validation failures.
 
 - [ ] **Task 7: Document CLI Execution Boundaries & Enrich Public JSDoc**
 - **Status**: ⏳ Pending

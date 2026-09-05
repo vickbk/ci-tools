@@ -1,6 +1,7 @@
 # Vitest Coverage Reporting
 
-This feature module handles the conversion of Vitest coverage output into GitHub-friendly summary content and pull-request comments.
+This entrypoint converts Vitest coverage output into GitHub-friendly summary
+content and pull-request comments.
 
 ## Overview
 
@@ -29,7 +30,7 @@ The coverage subsystem is responsible for:
 import {
   generateCoverageSummary,
   postCoverageComment,
-} from "../features/vitest";
+} from "@vickbk/ci-tools/vitest";
 
 generateCoverageSummary();
 await postCoverageComment();
