@@ -1,4 +1,4 @@
-import { isNotFoundError, readTextFileAsync } from "../../../../../shared/files";
+import { isNotFoundError, readTextFileAsync } from "@/shared/files";
 import path from "node:path";
 import { README_ERROR_LOG_FILE } from "./config";
 

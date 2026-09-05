@@ -1,4 +1,4 @@
-import { getCommentWithId, saveComment } from "../../../core/github";
+import { getCommentWithId, saveComment } from "@/core/github";
 import { getCommentBody } from "./get-comment-body";
 
 export const README_COMMENT_IDENTIFIER = "<!-- readme-comment -->";

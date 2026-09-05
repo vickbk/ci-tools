@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { CreateTextFileOptions } from "../types";
+import { DUMP_DIR } from "./config";
 
 export function createTextFileSync({
   filePath,
   content,
-  baseDir = ".dump",
+  baseDir = DUMP_DIR,
   overwrite = true,
 }: CreateTextFileOptions): string {
   const resolvedBase = path.resolve(baseDir);

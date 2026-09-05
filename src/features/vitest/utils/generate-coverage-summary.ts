@@ -1,5 +1,5 @@
-import { config } from "../../../config";
-import { githubWriteEnv, writeStepSummary } from "../../../core/github";
+import { config } from "@/config";
+import { githubWriteEnv, writeStepSummary } from "@/core/github";
 import fs from "node:fs";
 import path from "node:path";
 import { getReport } from "./report";

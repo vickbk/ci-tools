@@ -1,4 +1,5 @@
 import { normalizePath } from "@/shared/normalize-path";
+import path from "node:path";
 import { z } from "zod";
 
 /**
@@ -32,19 +33,27 @@ export const configSchema = z.object({
     vitestReport: z
       .string()
       .default("coverage/coverage-summary.json")
-      .transform((relPath) => normalizePath(relPath)),
+      .transform((relPath) =>
+        normalizePath(path.resolve(process.cwd(), relPath)),
+      ),
     changelog: z
       .string()
       .default("CHANGELOG.md")
-      .transform((relPath) => normalizePath(relPath)),
+      .transform((relPath) =>
+        normalizePath(path.resolve(process.cwd(), relPath)),
+      ),
     releaseChangelog: z
       .string()
       .default("RELEASE_CHANGELOG.md")
-      .transform((relPath) => normalizePath(relPath)),
+      .transform((relPath) =>
+        normalizePath(path.resolve(process.cwd(), relPath)),
+      ),
     package: z
       .string()
       .default("package.json")
-      .transform((relPath) => normalizePath(relPath)),
+      .transform((relPath) =>
+        normalizePath(path.resolve(process.cwd(), relPath)),
+      ),
   }),
   docs: z.object({
     hasRun: z

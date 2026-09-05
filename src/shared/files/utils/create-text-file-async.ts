@@ -1,11 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { CreateTextFileOptions } from "../types";
+import { DUMP_DIR } from "./config";
 
 export async function createTextFileAsync({
   filePath,
   content,
-  baseDir = ".dump",
+  baseDir = DUMP_DIR,
   overwrite = true,
 }: CreateTextFileOptions): Promise<string> {
   const resolvedBase = path.resolve(baseDir);

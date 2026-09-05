@@ -1,11 +1,11 @@
-export type DocumentationRequirement = {
+type DocumentationRequirement = {
   codeBlock?: boolean;
   packageManagerCommands?: boolean;
   publicEntryPoints?: boolean;
   wcagReference?: boolean;
 };
 
-export type DocumentationSection = {
+type DocumentationSection = {
   id: string;
   heading: string;
   required: boolean;
@@ -20,7 +20,6 @@ export type DocumentationContract = {
   requiredSectionIds: string[];
   recommendedSectionIds: string[];
 };
-
 /**
  * A single validation issue discovered while checking README section completeness or
  * ordering against the documentation contract.

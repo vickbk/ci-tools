@@ -1,5 +1,5 @@
 // scripts/features/docs/utils/orchestration/check-readme-file.ts
-import { readTextFile } from "../../../../shared/files";
+import { readTextFile } from "@/shared/files";
 import { checkReadmeSections } from "./check-readme-sections";
 import { ReadmeValidationError } from "./errors/readme-validation-error";
 import type { FileValidationResult, ReadmeTarget } from "./types";

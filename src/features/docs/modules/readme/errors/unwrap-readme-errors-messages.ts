@@ -1,4 +1,4 @@
-import { getErrorMessage } from "../../../../../core/errors";
+import { getErrorMessage } from "@/core/errors";
 import { formatReadmeValidationError } from "./format/format-readme-validation-error";
 import { ReadmeValidationError } from "./readme-validation-error";
 

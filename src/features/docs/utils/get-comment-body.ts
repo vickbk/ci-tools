@@ -1,4 +1,4 @@
-import { config } from "../../../config";
+import { config } from "@/config";
 import { getErrorLogContent } from "../modules/readme";
 
 export const SUCCESS_MESSAGE =

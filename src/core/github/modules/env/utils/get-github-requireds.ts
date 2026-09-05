@@ -1,4 +1,4 @@
-import { config } from "../../../../../config";
+import { config } from "@/config";
 
 export function getGithubRequireds() {
   const { token, repository, eventPath } = config.github;
