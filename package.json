@@ -4,6 +4,23 @@
   "description": "Programmatic CI workflow utilities for documentation, releases, GitHub Actions, and Vitest reporting.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vickbk/ci-tools.git"
+  },
+  "author": "Vick Bake <vickbake8@gmail.com>",
+  "keywords": [
+    "ci",
+    "github-actions",
+    "release-automation",
+    "vitest",
+    "coverage",
+    "readme-validation"
+  ],
+  "bugs": {
+    "url": "https://github.com/vickbk/ci-tools/issues"
+  },
+  "homepage": "https://github.com/vickbk/ci-tools#readme",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
