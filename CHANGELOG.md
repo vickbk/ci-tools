@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.1.1] - 2026-09-05
+
+### Info
+
+- **Improved documentation for onboarding**: Added examples to the readme for showing how to easily get started
+
 ## [0.1.0] - 2026-09-05
 
 ### Added
