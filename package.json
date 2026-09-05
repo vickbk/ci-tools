@@ -1,0 +1,53 @@
+{
+  "name": "@vickbk/ci-tools",
+  "version": "0.1.0",
+  "description": "Programmatic CI workflow utilities for documentation, releases, GitHub Actions, and Vitest reporting.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts",
+    "./docs": "./src/features/docs/index.ts",
+    "./github": "./src/core/github/index.ts",
+    "./releases": "./src/features/releases/index.ts",
+    "./vitest": "./src/features/vitest/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "lint": "eslint",
+    "prepublishOnly": "pnpm typecheck && pnpm build",
+    "release-note": "tsx ./scripts/bin/extract-release-note.ts",
+    "release-tag": "tsx ./scripts/bin/extract-version-tag.ts",
+    "comment": "tsx ./scripts/bin/post-vitest-coverage.ts",
+    "coverage-summary": "tsx ./scripts/bin/coverage-summary.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "eslint": "^10.9.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-boundaries": "^7.2.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.0",
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^5.0.0"
+  }
+}
