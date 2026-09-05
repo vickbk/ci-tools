@@ -1,25 +1,4 @@
-export type DocumentationRequirement = {
-  codeBlock?: boolean;
-  packageManagerCommands?: boolean;
-  publicEntryPoints?: boolean;
-  wcagReference?: boolean;
-};
-
-export type DocumentationSection = {
-  id: string;
-  heading: string;
-  required: boolean;
-  aliases?: string[];
-  requirements?: DocumentationRequirement;
-};
-
-export type DocumentationContract = {
-  packageName: string;
-  sections: DocumentationSection[];
-  preferredSectionOrder: string[];
-  requiredSectionIds: string[];
-  recommendedSectionIds: string[];
-};
+import { DocumentationContract } from "@/shared/types";
 
 /**
  * A single validation issue discovered while checking README section completeness or
@@ -84,7 +63,10 @@ export type ParsedReadmeHeading = {
 /**
  * README heading matched to a section in the documentation contract.
  */
-export type MatchedReadmeSection = ParsedReadmeHeading & { id: string };
+export type MatchedReadmeSection = ParsedReadmeHeading & {
+  /** Stable section identifier resolved from the documentation contract. */
+  id: string;
+};
 
 /**
  * File and contract pair submitted to README validation.

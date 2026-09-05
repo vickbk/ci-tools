@@ -1,4 +1,4 @@
-import { createTextFileSync } from "../../../../../shared/files";
+import { createTextFileSync } from "@/shared/files";
 import { README_ERROR_LOG_FILE } from "./config";
 import { unwrapReadmeErrorMessages } from "./unwrap-readme-errors-messages";
 

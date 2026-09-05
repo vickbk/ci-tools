@@ -13,7 +13,7 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
-  target: "es2022",
+  target: "es2025",
   treeshake: true,
   outExtensions({ format }) {
     return { js: format === "cjs" ? ".cjs" : ".mjs" };

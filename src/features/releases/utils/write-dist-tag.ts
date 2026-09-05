@@ -1,4 +1,4 @@
-import { githubWriteEnv } from "../../../core/github";
+import { githubWriteEnv } from "@/core/github";
 import { assertVersionMatch } from "./assert-version";
 import { getReleaseType } from "./release-type";
 
@@ -8,7 +8,9 @@ import { getReleaseType } from "./release-type";
  * @returns void - Emits a dist-tag environment variable and logs the publish strategy.
  * @throws {Error} When the version does not match package.json or when the release metadata cannot be resolved.
  */
-export function writeDistTagToGithubOutput(rawTag: string): void {
+export function writeDistTagToGithubOutput(): void {
+  const rawTag = process.argv[2] || "";
+
   const {
     releaseTag: DIST_TAG,
     normalized,

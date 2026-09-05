@@ -1,4 +1,4 @@
-import { DocumentationContract } from "./types";
+import { DocumentationContract } from "@/shared/types";
 import { getMatchedReadmeSections } from "./get-matched-readme-sections";
 import {
   findMissingSectionDiagnostics,

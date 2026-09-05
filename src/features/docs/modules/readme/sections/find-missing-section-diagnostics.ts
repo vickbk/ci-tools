@@ -1,4 +1,4 @@
-import { DocumentationContract } from "../types";
+import { DocumentationContract } from "@/shared/types";
 import { getContractSection } from "../contract";
 import type { ReadmeSectionDiagnostic } from "../types";
 

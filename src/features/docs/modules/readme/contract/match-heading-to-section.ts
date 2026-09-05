@@ -1,4 +1,4 @@
-import { DocumentationContract } from "../types";
+import { DocumentationContract } from "@/shared/types";
 import { normalizeHeadingText } from "../headings/normalize-heading-text";
 
 /**

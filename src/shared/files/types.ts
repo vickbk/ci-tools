@@ -12,6 +12,8 @@ export type CreateTextFileOptions = FileOptions & {
   overwrite?: boolean;
 };
 
+/** Options used when reading text or JSON files. */
 export type ReadTextFileOptions = FileOptions & {
+  /** Text encoding passed to the filesystem API. */
   encoding?: BufferEncoding;
 };

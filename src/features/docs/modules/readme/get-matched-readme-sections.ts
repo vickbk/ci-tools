@@ -1,4 +1,4 @@
-import { DocumentationContract } from "./types";
+import { DocumentationContract } from "@/shared/types";
 import { matchHeadingToSection } from "./contract";
 import { parseReadmeHeadings } from "./headings/parse-readme-headings";
 import type { MatchedReadmeSection } from "./types";

@@ -1,4 +1,4 @@
-import { config } from "../../../config";
+import { config } from "@/config";
 import fs from "node:fs";
 import path from "node:path";
 import { resolveVersionTag } from "./version-tag";

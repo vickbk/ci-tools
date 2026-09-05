@@ -1,5 +1,5 @@
 // scripts/features/docs/utils/orchestration/check-readme-files.ts
-import type { DocumentationContract } from "../modules/readme/types";
+import { DocumentationContract } from "@/shared/types";
 import type { FileValidationResult } from "../modules/readme";
 import { checkReadmeFile } from "../modules/readme";
 

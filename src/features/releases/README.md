@@ -1,6 +1,7 @@
 # Release Automation
 
-This feature module handles release-note extraction, version normalization, and dist-tag publication metadata for the repository's workflow automation.
+This entrypoint handles release-note extraction, version normalization, and
+dist-tag publication metadata for repository workflow automation.
 
 ## Overview
 
@@ -31,7 +32,7 @@ The release subsystem is responsible for:
 import {
   extractReleaseNotes,
   writeDistTagToGithubOutput,
-} from "../features/releases";
+} from "@vickbk/ci-tools/releases";
 
 const outputPath = extractReleaseNotes({ versionTag: "1.2.3" });
 writeDistTagToGithubOutput();

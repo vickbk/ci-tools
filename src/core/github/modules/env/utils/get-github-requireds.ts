@@ -1,5 +1,11 @@
-import { config } from "../../../../../config";
+import { config } from "@/config";
 
+/**
+ * Reads the minimum GitHub Actions environment required by API helpers.
+ *
+ * @returns The configured token, repository, event path, and workflow metadata.
+ * @throws {Error} When `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, or `GITHUB_EVENT_PATH` is missing.
+ */
 export function getGithubRequireds() {
   const { token, repository, eventPath } = config.github;
 

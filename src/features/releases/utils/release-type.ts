@@ -1,3 +1,4 @@
+import { ReleaseTypeResult } from "../types";
 import { resolveVersionTag } from "./version-tag";
 
 /**
@@ -7,7 +8,7 @@ import { resolveVersionTag } from "./version-tag";
  * @returns Metadata describing the normalized version, prerelease status, and publish tag.
  * @throws {Error} When the provided tag does not resolve to a valid version string.
  */
-export function getReleaseType(tag: string) {
+export function getReleaseType(tag: string): ReleaseTypeResult {
   const normalized = resolveVersionTag(tag);
 
   const hyphenIndex = normalized.indexOf("-");

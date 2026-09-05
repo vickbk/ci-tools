@@ -1,6 +1,8 @@
 # GitHub Actions Integration
 
-This directory wraps the GitHub Actions environment and REST API interactions used by release and coverage scripts. It is the boundary between workflow runtime data and the repository's domain logic.
+This entrypoint wraps the GitHub Actions environment and REST API interactions
+used by release and coverage scripts. It is the boundary between workflow
+runtime data and repository domain logic.
 
 ## Overview
 
@@ -41,7 +43,7 @@ import {
   getGithubParams,
   writeStepSummary,
   githubWriteEnv,
-} from "../core/github";
+} from "@vickbk/ci-tools/github";
 
 const config = getGithubParams();
 writeStepSummary("## Coverage report\n- Done");
