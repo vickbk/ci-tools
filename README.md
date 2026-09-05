@@ -1,5 +1,10 @@
 # @vickbk/ci-tools
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/@vickbk/ci-tools.svg)](https://www.npmjs.com/package/@vickbk/ci-tools)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/vickbk/ci-tools/lint-test-docs.yml?branch=main)](https://github.com/vickbk/ci-tools/actions)
+[![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/vickbk/ci-tools)
+
 Programmatic CI utilities for documentation contracts, release metadata,
 GitHub Actions integration, and Vitest coverage reporting.
 
@@ -47,10 +52,16 @@ scripts:
 
 ```ts
 import { runTask } from "@vickbk/ci-tools/core";
+import { checkReadmeFiles } from "@vickbk/ci-tools/docs";
+import { readmeContract } from "./readme-contract.ts";
 
-await runTask("validate", async () => {
-  // Run repository-specific validation here.
-});
+await runTask(
+  "validate",
+  async () => {
+    await checkReadmeFiles({ "./README.md": readmeContract });
+  },
+  "❌ [Fatal Error]", // A prefix to know which error is occuring
+);
 ```
 
 ## Architecture
