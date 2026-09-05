@@ -5,6 +5,14 @@ import { getFullPath } from "./get-fullpath";
 /**
  * Asynchronously reads a text file, enforcing path bounds (if baseDir is provided)
  * and wrapping I/O errors with original cause preservation.
+ *
+ * @param options - File path, base directory, and text encoding options.
+ * @returns A promise resolving to the file contents as text.
+ * @throws {Error} When the path is outside the base directory or the file cannot be read.
+ * @example
+ * ```ts
+ * const content = await readTextFileAsync({ filePath: "README.md" });
+ * ```
  */
 export async function readTextFileAsync({
   encoding = "utf8",

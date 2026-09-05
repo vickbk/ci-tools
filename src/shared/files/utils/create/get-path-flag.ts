@@ -2,6 +2,17 @@ import path from "node:path";
 import { CreateTextFileOptions } from "../../types";
 import { DUMP_DIR } from "../config";
 
+/**
+ * Resolves a safe output path and selects the filesystem write flag.
+ *
+ * @param options - Target path, optional base directory, and overwrite policy.
+ * @returns The resolved absolute path and write flag for the filesystem API.
+ * @throws {Error} When path traversal would place the target outside `baseDir`.
+ * @example
+ * ```ts
+ * const target = getPathFlag({ filePath: "report.txt" });
+ * ```
+ */
 export function getPathFlag({
   baseDir = DUMP_DIR,
   filePath,

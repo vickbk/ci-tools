@@ -64,13 +64,23 @@
   - [x] Ensure all required sections, headings, code blocks, and package manager commands match their contracts.
   - [x] Run `pnpm readme-check` and confirm 0 contract validation failures.
 
-- [ ] **Task 7: Document CLI Execution Boundaries & Enrich Public JSDoc**
-- **Status**: ⏳ Pending
+- [x] **Task 7: Document CLI Execution Boundaries & Enrich Public JSDoc**
+- **Status**: ✅ Completed
 - **Target**: 2026-09-09
 - **Description**: Document the boundary between pure SDK utilities and process-aware CLI lifecycle helpers, and add JSDoc annotations to public barrel functions.
 - **Steps**:
-  - [ ] Add explicit JSDoc annotations to `runTask` and `handleFatalError` stating they are CLI orchestrators managing process exit codes.
-  - [ ] Add JSDoc comments (`@param`, `@returns`, `@throws`) across all exported functions in public barrel (`index.ts`) files.
+  - [x] Add explicit JSDoc annotations to `runTask` and `handleFatalError` stating they are CLI orchestrators managing process exit codes.
+  - [x] Add JSDoc comments (`@param`, `@returns`, `@throws`) across all exported functions in public barrel (`index.ts`) files.
+  - [x] **Task 7.1: Resolve Audit Findings for Undocumented & Incomplete Exports**
+  - **Status**: ✅ Done
+  - **Target**: 2026-09-09
+  - **Description**: Address all documentation gaps and missing JSDoc tags identified in the codebase audit across `src/shared`, `readme-contract.ts` files, domain types, internal feature utilities, and configuration modules.
+  - **Steps**:
+    - [x] Add complete JSDoc annotations (`@param`, `@returns`, `@throws`, `@example`) to all shared utilities in `src/shared/` (`createTextFileAsync`, `createTextFileSync`, `getPathFlag`, `getFullPath`, `isNotFoundError`, `readJsonFile`, `readTextFileAsync`, `readTextFileSync`, `readTextFile`, `normalizePath`).
+    - [x] Add property-level inline JSDoc comments to domain contract/result types in `src/core/types.ts`, `src/features/docs/types.ts`, `src/features/releases/types.ts`, `src/features/vitest/types.ts`, `src/shared/types.ts`, and `src/config/get-config.ts`.
+    - [x] Add JSDoc header annotations to all 6 co-located `readme-contract.ts` constants.
+    - [x] Update internal utility function JSDoc in `src/features/docs/` (`getErrorLogContent`, `getPreviousAndCurrentSection`), `src/features/releases/` (`extractReleaseNotes`), and `src/config/` (`getConfig`).
+    - [x] Run `pnpm typecheck && pnpm build` to verify clean compilation with zero runtime or contract regressions.
 
 ---
 

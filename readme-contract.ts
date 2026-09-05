@@ -1,5 +1,6 @@
 import type { DocumentationContract } from "@/shared/types";
 
+/** Documentation contract for the package root README and its public SDK overview. */
 export const rootReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools",
   sections: [

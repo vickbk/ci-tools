@@ -63,7 +63,10 @@ export type ParsedReadmeHeading = {
 /**
  * README heading matched to a section in the documentation contract.
  */
-export type MatchedReadmeSection = ParsedReadmeHeading & { id: string };
+export type MatchedReadmeSection = ParsedReadmeHeading & {
+  /** Stable section identifier resolved from the documentation contract. */
+  id: string;
+};
 
 /**
  * File and contract pair submitted to README validation.

@@ -5,6 +5,14 @@ import { getFullPath } from "./get-fullpath";
 /**
  * Synchronously reads a text file, enforcing path bounds (if baseDir is provided)
  * and wrapping I/O errors with original cause preservation.
+ *
+ * @param options - File path, base directory, and text encoding options.
+ * @returns The file contents as text.
+ * @throws {Error} When the path is outside the base directory or the file cannot be read.
+ * @example
+ * ```ts
+ * const content = readTextFileSync({ filePath: "README.md" });
+ * ```
  */
 export function readTextFileSync({
   encoding = "utf-8",

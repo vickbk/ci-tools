@@ -1,5 +1,12 @@
 /**
  * Normalizes any caught value into a clean, human-readable error string.
+ *
+ * @param error - An unknown value caught from a failed operation.
+ * @returns A readable message for errors, objects, primitives, and circular values.
+ * @example
+ * ```ts
+ * const message = getErrorMessage(error);
+ * ```
  */
 
 export function getErrorMessage(error: unknown): string {

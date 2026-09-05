@@ -2,6 +2,12 @@ import { readJsonFile } from "@/shared/files";
 import { GithubEnvData } from "../types";
 import { getGithubRequireds } from "./get-github-requireds";
 
+/**
+ * Loads GitHub Actions environment data and resolves the active pull request.
+ *
+ * @returns A promise containing validated workflow parameters and pull-request number.
+ * @throws {Error} When required workflow variables are missing or the event is not a pull request.
+ */
 export async function getGithubEnv() {
   const params = getGithubRequireds();
 

@@ -1,5 +1,6 @@
 import type { DocumentationContract } from "@/shared/types";
 
+/** Documentation contract for the GitHub Actions integration README. */
 export const githubReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/github",
   sections: [

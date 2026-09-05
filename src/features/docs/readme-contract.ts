@@ -6,6 +6,7 @@ const sharedRequirements = {
   publicEntryPoints: true,
 };
 
+/** Documentation contract for the README validation and documentation feature README. */
 export const docsReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/docs",
   sections: [

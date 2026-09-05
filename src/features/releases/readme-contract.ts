@@ -1,5 +1,6 @@
 import type { DocumentationContract } from "@/shared/types";
 
+/** Documentation contract for the release automation feature README. */
 export const releasesReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/releases",
   sections: [

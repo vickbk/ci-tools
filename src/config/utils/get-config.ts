@@ -4,7 +4,9 @@ import { configSchema } from "./config-schema";
 let cachedConfig: Config | null = null;
 
 export type ConfigInput = {
+  /** Working directory used to resolve repository-relative paths. */
   cwd?: string;
+  /** Environment object to validate instead of the live process environment. */
   env?: NodeJS.ProcessEnv;
 };
 
@@ -20,6 +22,7 @@ export const resetConfig = (): void => {
 /**
  * Reads the current process environment, validates it against the workflow schema, and returns a cached config object.
  *
+ * @param input - Optional working-directory and environment overrides.
  * @returns The resolved workflow configuration for GitHub Actions metadata, file paths, and runtime flags.
  * @throws {Error} When required configuration values are invalid or fail schema validation.
  */

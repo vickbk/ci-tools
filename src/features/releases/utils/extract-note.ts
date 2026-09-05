@@ -10,6 +10,7 @@ import { resolveVersionTag } from "./version-tag";
  *
  * @param options - Configuration options including version tag and paths
  * @returns The resolved output file path where notes were written
+ * @throws {Error} When CHANGELOG.md is missing or the requested release section cannot be found.
  */
 export function extractReleaseNotes(
   options: ExtractReleaseNotesOptions = {},

@@ -1,5 +1,6 @@
 import type { DocumentationContract } from "@/shared/types";
 
+/** Documentation contract for the Vitest coverage reporting feature README. */
 export const vitestReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/vitest",
   sections: [

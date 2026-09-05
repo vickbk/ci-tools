@@ -1,5 +1,6 @@
 import type { DocumentationContract } from "@/shared/types";
 
+/** Documentation contract for the core SDK README and CLI/error boundary guidance. */
 export const coreReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/core",
   sections: [
