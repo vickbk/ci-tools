@@ -50,28 +50,64 @@ the CI entrypoint a predictable error boundary.
 ```json
 {
   "scripts": {
-    "enforce-rules": "tsx scripts/enforce-rules.ts"
+    "enforce-rules": "tsx scripts/pr-rules-helper.ts"
   }
 }
 ```
 
-### Implement the task with `runTask`
+### Task Orchestration with `runTask`
+
+The `runTask` utility provides a lightweight selector for CLI scripts and workflow entrypoints. It matches the task name passed in `process.argv` and executes the corresponding callback.
+
+#### Core Principles
+* **Natural CI Failure**: `runTask` does not catch or swallow errors. When a helper throws an error, it bubbles up naturally to fail the CI workflow step.
+* **Single Responsibility**: Keep workflow steps isolated—run policy updates, contract checks, and coverage reports in dedicated tasks.
+* **Optional Error Formatting**: Pass an optional error prefix or error formatter as the third argument to log clean, user-friendly CLI messages before process exit.
+
+---
+
+#### 1. Define the PR Rule Helper (`scripts/pr-rules.ts`)
 
 ```ts
-import { runTask } from "@vickbk/ci-tools/core";
-import { checkReadmeFiles, postReadmeComment } from "@vickbk/ci-tools/docs";
-import { rootReadmeContract } from "../readme-contract";
+import { getCommentWithId, saveComment } from "@vickbk/ci-tools/github";
 
-const readmeContracts = { "./README.md": rootReadmeContract };
+const PR_RULES_IDENTIFIER = "<!-- ci-tools-pr-rules -->";
 
-await runTask("enforce-rules", async () => {
-  try {
-    await checkReadmeFiles(readmeContracts);
-  } finally {
-    await postReadmeComment();
-  }
-});
+export async function prRuleComment(): Promise<void> {
+  const existing = await getCommentWithId(PR_RULES_IDENTIFIER);
+
+  await saveComment({
+    id: existing?.id ?? null,
+    identifier: PR_RULES_IDENTIFIER,
+    body: [
+      PR_RULES_IDENTIFIER,
+      "### 📋 Pull Request Requirements",
+      "- [ ] All commits must be signed and follow conventional commits.",
+      "- [ ] Vitest coverage must satisfy minimum repository thresholds.",
+      "- [ ] Documentation contracts must pass without drift.",
+    ].join("\n"),
+  });
+
+  console.log("Successfully posted PR rules comment.");
+}
 ```
+
+#### 2. Wrap with `runTask`
+
+```ts
+// scripts/pr-rules.ts
+import { runTask } from "@vickbk/ci-tools/core";
+import { prRuleComment } from "./pr-rules-helper";
+
+await runTask(
+  "pr-rules",
+  async () => {
+    await prRuleComment();
+  },
+  (error) => `[PR Rules Failure] ${error.message}`
+);
+```
+
 
 ## Standalone Module Examples
 
