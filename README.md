@@ -10,9 +10,8 @@ GitHub Actions integration, and Vitest coverage reporting.
 
 ## Overview
 
-`@vickbk/ci-tools` gives TypeScript projects small, composable building blocks
-for reliable GitHub Actions workflows. Use the feature modules independently,
-or combine them behind a repository-specific task entrypoint.
+`@vickbk/ci-tools` provides zero-dependency, composable workflow utilities for GitHub Actions integration, PR coverage reporting, documentation contract checks, and automated releases.
+
 
 ## Features & Value Proposition
 
