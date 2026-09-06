@@ -71,5 +71,5 @@ export const rootReadmeContract: DocumentationContract = {
     "subpath-exports",
     "license",
   ],
-  recommendedSectionIds: [],
+  recommendedSectionIds: ["verification-build"],
 };
