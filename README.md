@@ -10,45 +10,19 @@ GitHub Actions integration, and Vitest coverage reporting.
 
 ## Overview
 
-`@vickbk/ci-tools` provides small, composable helpers for CI repositories. The
-package keeps domain logic reusable while leaving workflow-specific orchestration
-and process lifecycle decisions to the consuming repository.
+`@vickbk/ci-tools` provides zero-dependency, composable workflow utilities for GitHub Actions integration, PR coverage reporting, documentation contract checks, and automated releases.
 
-Key benefits:
 
-- **Modular and tree-shakable**: import only the `/core`, `/docs`, `/github`,
-  `/releases`, or `/vitest` surface you need.
-- **Dual ESM and CommonJS**: consume modern `.mjs` or legacy `.cjs` bundles with
-  matching `.d.mts` and `.d.cts` declarations.
-- **Automated PR feedback**: reuse sticky-comment helpers for Vitest coverage,
-  README drift, and custom workflow bots.
-- **CI utility toolkit**: use zero-dependency file and path helpers for reliable
-  pipeline input and output handling.
+## Features & Value Proposition
 
-For detailed APIs, environment requirements, and workflow-specific examples,
-see the dedicated module READMEs:
-
-- [Core](src/core/README.md)
-- [Docs](src/features/docs/README.md)
-- [GitHub](src/core/github/README.md)
-- [Releases](src/features/releases/README.md)
-- [Vitest](src/features/vitest/README.md)
-
-## Quick Start
-
-Install the package and run a README contract check from a workflow script:
-
-```bash
-pnpm add -D @vickbk/ci-tools
-```
-
-```ts
-import { checkReadmeFiles } from "@vickbk/ci-tools/docs";
-import { rootReadmeContract } from "./readme-contract";
-
-const result = await checkReadmeFiles({ "./README.md": rootReadmeContract });
-console.log(result.every(({ result }) => result?.isValid));
-```
+- 📊 **Vitest PR Coverage Comments**: Parse `coverage-summary.json` and post
+  sticky, auto-updating coverage reports to pull requests.
+- 📜 **Documentation Contracts**: Enforce required headings and structural
+  rules across repository `README.md` files in CI.
+- 💬 **Sticky GitHub Comments**: Idempotently create, update, or remove
+  workflow status comments without spamming PR threads.
+- 📦 **Release Automation**: Extract clean Markdown release notes from
+  `CHANGELOG.md` for GitHub Releases and npm deployments.
 
 ## Installation
 
@@ -56,97 +30,93 @@ console.log(result.every(({ result }) => result?.isValid));
 pnpm add -D @vickbk/ci-tools
 ```
 
-## Subpath Exports
+## Workflow Setup & Task Orchestration
 
-| Import path                 | Purpose                                        |
-| --------------------------- | ---------------------------------------------- |
-| `@vickbk/ci-tools/core`     | Error handling and shared workflow primitives  |
-| `@vickbk/ci-tools/docs`     | README contract validation and reporting       |
-| `@vickbk/ci-tools/github`   | GitHub Actions environment and comment helpers |
-| `@vickbk/ci-tools/releases` | Release notes and npm dist-tag helpers         |
-| `@vickbk/ci-tools/vitest`   | Coverage summaries and pull-request comments   |
+Put repository-specific orchestration in a small executable and use `runTask`
+as its process-aware adapter. This keeps feature helpers reusable while giving
+the CI entrypoint a predictable error boundary.
 
-## Usage
+### Add the workflow step
 
-The subpaths are independently importable from ESM TypeScript or JavaScript.
-For executable workflow scripts, wrap process-aware work with `runTask`:
-
-```ts
-import { runTask } from "@vickbk/ci-tools/core";
-
-await runTask("validate", async () => {
-  await validateRepository();
-});
+```yaml
+- name: Verify Documentation Contracts
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: pnpm enforce-rules
 ```
 
-### Mirroring a `src/bin` CLI Script
-
-`runTask` selects a CLI task by matching the script name in `process.argv[1]`.
-Add the executable to `package.json`, then wrap its callback with the selector
-and a formatter for fatal errors:
+### Define the package script
 
 ```json
 {
   "scripts": {
-    "readme-check": "tsx ./src/bin/documentation/readme-check.ts"
+    "enforce-rules": "tsx scripts/pr-rules-helper.ts"
   }
 }
 ```
 
+### Task Orchestration with `runTask`
+
+The `runTask` utility provides a lightweight selector for CLI scripts and workflow entrypoints. It matches the task name passed in `process.argv` and executes the corresponding callback.
+
+#### Core Principles
+* **Natural CI Failure**: `runTask` does not catch or swallow errors. When a helper throws an error, it bubbles up naturally to fail the CI workflow step.
+* **Single Responsibility**: Keep workflow steps isolated—run policy updates, contract checks, and coverage reports in dedicated tasks.
+* **Optional Error Formatting**: Pass an optional error prefix or error formatter as the third argument to log clean, user-friendly CLI messages before process exit.
+
+---
+
+#### 1. Define the PR Rule Helper (`scripts/pr-rules.ts`)
+
 ```ts
-// src/bin/documentation/readme-check.ts
+import { getCommentWithId, saveComment } from "@vickbk/ci-tools/github";
+
+const PR_RULES_IDENTIFIER = "<!-- ci-tools-pr-rules -->";
+
+export async function prRuleComment(): Promise<void> {
+  const existing = await getCommentWithId(PR_RULES_IDENTIFIER);
+
+  await saveComment({
+    id: existing?.id ?? null,
+    identifier: PR_RULES_IDENTIFIER,
+    body: [
+      PR_RULES_IDENTIFIER,
+      "### 📋 Pull Request Requirements",
+      "- [ ] All commits must be signed and follow conventional commits.",
+      "- [ ] Vitest coverage must satisfy minimum repository thresholds.",
+      "- [ ] Documentation contracts must pass without drift.",
+    ].join("\n"),
+  });
+
+  console.log("Successfully posted PR rules comment.");
+}
+```
+
+#### 2. Wrap with `runTask`
+
+```ts
+// scripts/pr-rules.ts
 import { runTask } from "@vickbk/ci-tools/core";
-import { checkReadmeFiles, handleReadmeCliError } from "@vickbk/ci-tools/docs";
+import { prRuleComment } from "./pr-rules-helper";
 
 await runTask(
-  "readme-check",
+  "pr-rules",
   async () => {
-    await checkReadmeFiles(readmeContracts);
+    await prRuleComment();
   },
-  handleReadmeCliError,
+  (error) => `[PR Rules Failure] ${error.message}`
 );
 ```
 
-Run it with `pnpm readme-check`. The selector (`"readme-check"`), callback,
-and error prefix or formatter are the three `runTask` arguments; the helper
-returns without running when another bin script invokes the module.
 
-## Programmatic API Examples
+## Standalone Module Examples
 
-### GitHub Actions
+Each subpath can be imported directly from ESM TypeScript or JavaScript.
 
-`getGithubParams` reads pull-request context from the configured event payload;
-`getGithubEnv` provides the same context asynchronously. Compose
-`getCommentWithId` and `saveComment` for a sticky PR comment. These are the
-package's equivalents of a higher-level `parseGithubEnvData` or
-`postOrUpdateComment` helper.
+### Vitest Coverage (`@vickbk/ci-tools/vitest`)
 
-```ts
-import {
-  getCommentWithId,
-  getGithubEnv,
-  getGithubParams,
-  saveComment,
-} from "@vickbk/ci-tools/github";
-
-const params = getGithubParams();
-const env = await getGithubEnv();
-const identifier = "<!-- ci-tools-status -->";
-const existing = await getCommentWithId(identifier);
-
-await saveComment({
-  id: existing?.id ?? null,
-  identifier,
-  body: `Checks for ${env.repository} PR #${params.prNumber} are complete.`,
-});
-```
-
-### Vitest Coverage
-
-`generateCoverageSummary` reads the configured `coverage-summary.json`, writes
-the workflow summary, and exports `TOTAL_PCT`. `postCoverageComment` generates
-or updates the sticky coverage comment. The low-level report parser is kept
-internal so consumers can use the stable workflow-facing functions.
+Generate the workflow summary and create or update the sticky pull-request
+coverage comment:
 
 ```ts
 import {
@@ -158,46 +128,36 @@ generateCoverageSummary("coverage/coverage-summary.json");
 await postCoverageComment();
 ```
 
-### Documentation Contracts
+[📖 Read more in the Vitest Module README](src/features/vitest/README.md)
 
-Use `checkReadmeFiles` with a path-to-contract map and call `postReadmeComment`
-after the check in a GitHub Actions job. The checker throws an `AggregateError`
-when one or more targets fail, while the comment helper formats the stored
-success, skipped, or diagnostic result.
+### Documentation Contracts (`@vickbk/ci-tools/docs`)
+
+Define a contract map and validate the repository README files:
 
 ```ts
-import { checkReadmeFiles, postReadmeComment } from "@vickbk/ci-tools/docs";
+import { checkReadmeFiles } from "@vickbk/ci-tools/docs";
 import type { DocumentationContract } from "@vickbk/ci-tools/docs";
-import { rootReadmeContract } from "./readme-contract";
 
-const contracts: Record<string, DocumentationContract> = {
-  "./README.md": rootReadmeContract,
+const contract: DocumentationContract = {
+  packageName: "my-project",
+  sections: [
+    { id: "identity", heading: "my-project", required: true },
+    { id: "usage", heading: "Usage", required: true },
+  ],
+  preferredSectionOrder: ["identity", "usage"],
+  requiredSectionIds: ["identity", "usage"],
+  recommendedSectionIds: [],
 };
 
-try {
-  await checkReadmeFiles(contracts);
-} finally {
-  await postReadmeComment();
-}
+const results = await checkReadmeFiles({ "./README.md": contract });
+console.log(results.every(({ result }) => result?.isValid));
 ```
 
-### Release Notes
+[📖 Read more in the Docs Module README](src/features/docs/README.md)
 
-Extract a versioned Markdown section directly from `CHANGELOG.md` and receive
-the generated output path:
+### GitHub PR Primitives (`@vickbk/ci-tools/github`)
 
-```ts
-import { extractReleaseNotes } from "@vickbk/ci-tools/releases";
-
-const releaseNotesPath = extractReleaseNotes({ versionTag: "0.1.0" });
-console.log(`Release notes written to ${releaseNotesPath}`);
-```
-
-## Custom Helpers
-
-The GitHub primitives make small repository-specific bots easy to keep local.
-This complete helper posts a welcome message once and updates it on later runs
-while counting the current pull request's workflow visits:
+Create or update a sticky custom status comment using a stable identifier:
 
 ```ts
 import {
@@ -206,32 +166,61 @@ import {
   saveComment,
 } from "@vickbk/ci-tools/github";
 
-const identifier = "<!-- ci-tools-welcome -->";
+const identifier = "<!-- ci-tools-status -->";
+const { repository, prNumber } = getGithubParams();
+const existing = await getCommentWithId(identifier);
 
-export async function postWelcomeComment(): Promise<void> {
-  const { repository, prNumber } = getGithubParams();
-  const existing = await getCommentWithId(identifier);
-  const visits = existing
-    ? Number(existing.body.match(/Visits: (\d+)/)?.[1] ?? 0) + 1
-    : 1;
-
-  await saveComment({
-    id: existing?.id ?? null,
-    identifier,
-    body: [
-      `Welcome to ${repository} PR #${prNumber}!`,
-      `Visits: ${visits}`,
-      "This message is managed by the repository CI bot.",
-    ].join("\n"),
-  });
-}
+await saveComment({
+  id: existing?.id ?? null,
+  identifier,
+  body: `Checks for ${repository} PR #${prNumber} are complete.`,
+});
 ```
 
-## Architecture
+[📖 Read more in the GitHub Module README](src/core/github/README.md)
 
-The public package is SDK-oriented. The `core`, `docs`, `github`, `releases`,
-and `vitest` entrypoints contain reusable functions and types. The repository's
-`src/bin` scripts remain process-aware adapters for CI execution.
+### Release Automation (`@vickbk/ci-tools/releases`)
+
+Extract a versioned Markdown section from `CHANGELOG.md` into a release-note
+file:
+
+```ts
+import { extractReleaseNotes } from "@vickbk/ci-tools/releases";
+
+const releaseNotesPath = extractReleaseNotes({ versionTag: "0.1.0" });
+console.log(`Release notes written to ${releaseNotesPath}`);
+```
+
+[📖 Read more in the Releases Module README](src/features/releases/README.md)
+
+### Core Primitives (`@vickbk/ci-tools/core`)
+
+The core entrypoint provides process-aware task orchestration through `runTask`
+plus shared error, file, and workflow utility surfaces used by the feature
+modules.
+
+[📖 Read more in the Core Module README](src/core/README.md)
+
+## Environment Variables
+
+GitHub Actions workflows using GitHub-backed helpers provide these standard
+context variables:
+
+| Variable            | Purpose                                                  |
+| ------------------- | -------------------------------------------------------- |
+| `GITHUB_TOKEN`      | Token used for GitHub API requests and PR comments.      |
+| `GITHUB_EVENT_PATH` | Path to the event JSON containing pull-request metadata. |
+| `GITHUB_REPOSITORY` | Repository identifier in `owner/name` format.            |
+
+## Subpath Export Reference
+
+| Import path                 | Primary capabilities                          |
+| --------------------------- | --------------------------------------------- |
+| `@vickbk/ci-tools/core`     | Task orchestration and shared error utilities |
+| `@vickbk/ci-tools/docs`     | README contract validation and reporting      |
+| `@vickbk/ci-tools/github`   | GitHub Actions context and sticky comments    |
+| `@vickbk/ci-tools/releases` | Changelog extraction and npm release metadata |
+| `@vickbk/ci-tools/vitest`   | Coverage summaries and pull-request comments  |
 
 ## License
 

@@ -15,7 +15,7 @@ describe("postCoverageComment (Runner Entry Point)", () => {
   const mockReport = {
     totalPct: "88.5%",
     markdownSummary: "## Coverage Summary",
-    commentBody: "<!-- coverage-report-id -->\n## 🧪 Test Coverage Report",
+    commentBody: "\n## 🧪 Test Coverage Report",
   };
 
   const originalArgv = process.argv;
@@ -29,6 +29,8 @@ describe("postCoverageComment (Runner Entry Point)", () => {
         throw new Error(`process.exit called with code: ${code}`);
       },
     );
+    vi.spyOn(githubApi, "saveComment");
+    vi.spyOn(reportUtils, "getReport");
   });
 
   afterEach(() => {
@@ -37,16 +39,16 @@ describe("postCoverageComment (Runner Entry Point)", () => {
 
   describe("Happy Path Execution", () => {
     const { postCoverageComment } = vitest;
-    it("should post a new PR comment when no existing comment is found", async () => {
+
+    it("should load configuration, generate report, and save comment", async () => {
       vi.spyOn(githubApi, "getGithubParams").mockReturnValue(mockConfig);
       vi.spyOn(reportUtils, "getReport").mockReturnValue(mockReport);
-      vi.spyOn(githubApi, "getCommentWithId").mockResolvedValue(null);
       const saveCommentSpy = vi
         .spyOn(githubApi, "saveComment")
         .mockResolvedValue({
           id: 555,
           body: mockReport.commentBody,
-        });
+        } as never);
 
       await postCoverageComment();
 
@@ -56,72 +58,62 @@ describe("postCoverageComment (Runner Entry Point)", () => {
         "octocat/hello-world",
         "100200300",
       );
-      expect(githubApi.getCommentWithId).toHaveBeenCalledWith(
-        reportUtils.COMMENT_IDENTIFIER,
-      );
 
       expect(saveCommentSpy).toHaveBeenCalledWith({
         body: mockReport.commentBody,
-        id: null,
+        identifier: reportUtils.COMMENT_IDENTIFIER,
       });
 
       expect(console.log).toHaveBeenCalledWith(
-        "[Coverage Runner] Posting new PR comment...",
+        "[Coverage Runner] Comment processed successfully.",
       );
     });
+  });
 
-    it("should update an existing PR comment when a matching comment ID is found", async () => {
-      const existingComment = {
-        id: 789,
-        body: "<!-- coverage-report-id --> Old Report",
-      };
+  describe("Error Propagation & Failure Modes", () => {
+    const { postCoverageComment } = vitest;
 
-      vi.spyOn(githubApi, "getGithubParams").mockReturnValue(mockConfig);
-      vi.spyOn(reportUtils, "getReport").mockReturnValue(mockReport);
-      vi.spyOn(githubApi, "getCommentWithId").mockResolvedValue(
-        existingComment,
+    it("should reject and halt execution if getGithubParams fails", async () => {
+      const configError = new Error(
+        "Missing GITHUB_TOKEN environment variable",
       );
-      const saveCommentSpy = vi
-        .spyOn(githubApi, "saveComment")
-        .mockResolvedValue({
-          id: 789,
-          body: mockReport.commentBody,
-        });
-
-      await postCoverageComment();
-
-      expect(saveCommentSpy).toHaveBeenCalledWith({
-        body: mockReport.commentBody,
-        id: 789,
+      vi.spyOn(githubApi, "getGithubParams").mockImplementation(() => {
+        throw configError;
       });
 
-      expect(console.log).toHaveBeenCalledWith(
-        "[Coverage Runner] Updating existing PR comment ID: 789",
-      );
+      await expect(postCoverageComment()).rejects.toThrow(configError);
+
+      expect(reportUtils.getReport).not.toHaveBeenCalled();
+      expect(githubApi.saveComment).not.toHaveBeenCalled();
+      expect(console.log).not.toHaveBeenCalled();
     });
 
-    it("should handle existing comments with id = 0 correctly", async () => {
-      const zeroIdComment = {
-        id: 0,
-        body: "<!-- coverage-report-id --> Zero ID",
-      };
+    it("should reject and halt execution if getReport fails", async () => {
+      vi.spyOn(githubApi, "getGithubParams").mockReturnValue(mockConfig);
 
+      const reportError = new Error("Coverage summary artifact not found");
+      vi.spyOn(reportUtils, "getReport").mockImplementation(() => {
+        throw reportError;
+      });
+
+      await expect(postCoverageComment()).rejects.toThrow(reportError);
+
+      expect(githubApi.saveComment).not.toHaveBeenCalled();
+      expect(console.log).not.toHaveBeenCalled();
+    });
+
+    it("should reject and omit completion log if saveComment fails", async () => {
       vi.spyOn(githubApi, "getGithubParams").mockReturnValue(mockConfig);
       vi.spyOn(reportUtils, "getReport").mockReturnValue(mockReport);
-      vi.spyOn(githubApi, "getCommentWithId").mockResolvedValue(zeroIdComment);
-      const saveCommentSpy = vi
-        .spyOn(githubApi, "saveComment")
-        .mockResolvedValue({
-          id: 0,
-          body: mockReport.commentBody,
-        });
 
-      await postCoverageComment();
+      const saveError = new Error("GitHub API 500 Internal Server Error");
+      vi.spyOn(githubApi, "saveComment").mockRejectedValue(saveError);
 
-      expect(saveCommentSpy).toHaveBeenCalledWith({
-        body: mockReport.commentBody,
-        id: 0,
-      });
+      await expect(postCoverageComment()).rejects.toThrow(saveError);
+
+      expect(console.log).not.toHaveBeenCalledWith(
+        "[Coverage Runner] Comment processed successfully.",
+      );
     });
   });
 });

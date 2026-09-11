@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.0] - 2026-09-11
+
+### Added
+
+- **`verifyPackageVersion` Helper (`@vickbk/ci-tools/packages`)**:
+  Added a utility to read package manifests and verify whether a package matches an expected version.
+  - Automatically falls back to the manifest's `"name"` field for clear diagnostic errors when `packageName` is omitted.
+
+### Updated
+
+- **Github Module `saveComment` update**:
+  Save comment is now able to call `getCommentWithId` on its own when id is not provided and `identifier` parameter is defined.
+  Deprecated the `id` parameter in favor of using `identifier` alone to resolve existing PR comments directly within `saveComment`.
+
+### Info
+
+- **Improved Readme**: add more concrete examples to the readme files
+
 ## [0.1.1] - 2026-09-05
 
 ### Info

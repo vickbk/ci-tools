@@ -18,3 +18,5 @@ export * from "./core/github";
 export * from "./features/releases";
 /** Public Vitest coverage reporting utilities. */
 export * from "./features/vitest";
+/** Public packages checking utilities */
+export * from "./features/packages";

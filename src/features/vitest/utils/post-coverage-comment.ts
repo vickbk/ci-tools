@@ -1,4 +1,4 @@
-import { getCommentWithId, getGithubParams, saveComment } from "@/core/github";
+import { getGithubParams, saveComment } from "@/core/github";
 import { COMMENT_IDENTIFIER, getReport } from "./report";
 
 /**
@@ -10,16 +10,11 @@ import { COMMENT_IDENTIFIER, getReport } from "./report";
 export async function postCoverageComment() {
   const config = getGithubParams();
   const report = getReport(undefined, config.repository, config.runId);
-  const comment = await getCommentWithId(COMMENT_IDENTIFIER);
 
-  console.log(
-    comment
-      ? `[Coverage Runner] Updating existing PR comment ID: ${comment.id}`
-      : "[Coverage Runner] Posting new PR comment...",
-  );
   await saveComment({
     body: report.commentBody,
-    id: comment?.id ?? null,
+    identifier: COMMENT_IDENTIFIER,
   });
+
   console.log("[Coverage Runner] Comment processed successfully.");
 }
