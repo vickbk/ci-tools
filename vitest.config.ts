@@ -9,7 +9,7 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src/"),
       "#": path.resolve(import.meta.dirname, "./"),
     },
-    exclude: ["**/node_modules/**", "**/dist/**"],
+    exclude: ["**/node_modules/**", "**/dist/**", "**/.dump/**"],
     coverage: {
       reporter: ["html", "text", "json", "json-summary"],
     },

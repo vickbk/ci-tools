@@ -63,6 +63,11 @@
       "types": "./dist/vitest.d.mts",
       "import": "./dist/vitest.mjs",
       "require": "./dist/vitest.cjs"
+    },
+    "./packages": {
+      "types": "./dist/packages.d.mts",
+      "import": "./dist/packages.mjs",
+      "require": "./dist/packages.cjs"
     }
   },
   "scripts": {

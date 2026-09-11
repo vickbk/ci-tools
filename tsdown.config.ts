@@ -8,6 +8,7 @@ export default defineConfig({
     github: "src/core/github/index.ts",
     releases: "src/features/releases/index.ts",
     vitest: "src/features/vitest/index.ts",
+    packages: "src/features/packages/index.ts",
   },
   format: ["cjs", "esm"],
   dts: true,
