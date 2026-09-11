@@ -1,4 +1,4 @@
-import type { DocumentationContract } from "@vickbk/ci-tools/docs";
+import { DocumentationContract } from "@/shared";
 
 export const packagesReadmeContract: DocumentationContract = {
   packageName: "@vickbk/ci-tools/packages",
