@@ -1,4 +1,4 @@
-import { getCommentWithId, saveComment } from "@/core/github";
+import { saveComment } from "@/core/github";
 import { getCommentBody } from "./get-comment-body";
 
 /** Stable marker used to find and update the README validation pull-request comment. */
@@ -15,20 +15,10 @@ export const README_COMMENT_IDENTIFIER = "<!-- readme-comment -->";
  * ```
  */
 export async function postReadmeComment() {
-  const [content, comment] = await Promise.all([
-    getCommentBody(),
-    getCommentWithId(README_COMMENT_IDENTIFIER),
-  ]);
-
-  console.log(
-    comment
-      ? `[Readme Reporter] Updating existing PR comment ID: ${comment.id}`
-      : "[Readme Reporter] Posting new PR comment...",
-  );
+  const content = await getCommentBody();
 
   await saveComment({
     body: `${content}`,
-    id: comment?.id ?? null,
     identifier: README_COMMENT_IDENTIFIER,
   });
 
