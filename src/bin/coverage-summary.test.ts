@@ -1,3 +1,4 @@
+import { shutConsole } from "#/tests/console";
 import fs from "node:fs";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -10,6 +11,7 @@ describe("Top-level execution (if block)", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.resetModules();
+    shutConsole();
     vi.spyOn(process, "exit").mockImplementation(() => "" as never);
   });
   it("should execute generateCoverageSummary when process.argv[1] contains 'coverage-summary'", async () => {
