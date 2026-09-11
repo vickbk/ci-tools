@@ -86,3 +86,57 @@ await verifyPackageVersion({
    `No "version" field found in @scope/pkg at "./path/to/package.json"`
 2. **File System & Parse Failures**: Propagates native `readJsonFile` errors (e.g., `ENOENT` for missing files, invalid JSON syntax).
 ````
+
+---
+
+## Usage Examples
+
+### Basic Version Verification
+
+Assert that a workspace package matches an expected target version:
+
+```ts
+import { verifyPackageVersion } from "@vickbk/ci-tools/packages";
+
+const { matches, currentVersion, expectedVersion } = await verifyPackageVersion(
+  {
+    packagePath: "./packages/core/package.json",
+    expectedVersion: "1.2.0",
+  },
+);
+
+if (!matches) {
+  console.error(
+    `Version drift detected! Found \({currentVersion}, expected\){expectedVersion}`,
+  );
+  process.exit(1);
+}
+```
+
+### Custom Package Name Override
+
+Explicitly override the package name label for diagnostic logs when checking custom or nested manifests:
+
+```ts
+import { verifyPackageVersion } from "@vickbk/ci-tools/packages";
+
+const result = await verifyPackageVersion({
+  packagePath: "./node_modules/foo/package.json",
+  expectedVersion: "3.2.0",
+  packageName: "foo-override",
+});
+```
+
+### Automatic Package Name Fallback
+
+When `packageName` is omitted, `verifyPackageVersion` reads the `"name"` field from the target manifest for diagnostic logging:
+
+```ts
+import { verifyPackageVersion } from "@vickbk/ci-tools/packages";
+
+// If version field is missing, error message automatically includes manifest name
+await verifyPackageVersion({
+  packagePath: "./node_modules/my-dep/package.json",
+  expectedVersion: "2.0.0",
+});
+```
