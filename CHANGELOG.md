@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.1] - 2026-10-05
+
+### Enhanced
+
+- **Documentation Workflow Comments**: Updated `getCommentBody` to automatically append and format the summary of checked README files (`readCheckedReadmes`) above the validation status or diagnostic logs in PR comments, improving transparency during documentation checks.
+
 ## [0.2.0] - 2026-09-11
 
 ### Added
