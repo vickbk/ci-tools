@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { config } from "@/config";
-import { getErrorLogContent } from "../modules/readme";
+import { getErrorLogContent } from "../errors/get-error-log-content";
 import {
   getCommentBody,
   SKIPPED_MESSAGE,
@@ -16,7 +16,7 @@ vi.mock("@/config", () => ({
   },
 }));
 
-vi.mock("../modules/readme", () => ({
+vi.mock("../errors/get-error-log-content", () => ({
   getErrorLogContent: vi.fn(),
 }));
 

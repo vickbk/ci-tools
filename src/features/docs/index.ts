@@ -22,6 +22,6 @@ export type {
 /** Validates multiple README files against their documentation contracts. */
 export { checkReadmeFiles } from "./utils/check-readme-files";
 /** Posts or updates the README validation comment in the active pull request. */
-export { postReadmeComment } from "./utils/post-readme-comment";
+export { postReadmeComment } from "./modules/readme";
 /** Contract describing required README sections and requirements. */
 export type { DocumentationContract } from "@/shared/types";

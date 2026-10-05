@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shutConsole } from "#/tests/console";
 import { config } from "@/config";
 import { saveComment } from "@/core/github";
-import { getErrorLogContent } from "../modules/readme";
+import { getErrorLogContent } from "../errors/get-error-log-content";
 import { SKIPPED_MESSAGE, SUCCESS_MESSAGE } from "./get-comment-body";
 import {
   postReadmeComment,
@@ -22,7 +22,7 @@ vi.mock("@/core/github", () => ({
   saveComment: vi.fn(),
 }));
 
-vi.mock("../modules/readme", () => ({
+vi.mock("../errors/get-error-log-content", () => ({
   getErrorLogContent: vi.fn(),
 }));
 

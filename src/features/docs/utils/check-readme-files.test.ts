@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as filesModule from "@/shared/files";
 import { DocumentationContract } from "@/shared/types";
 import { ReadmeValidationError } from "../modules/readme";
+import * as saveCheckedReadmesModule from "../modules/readme/checked-readmes";
 import { checkReadmeFiles } from "./check-readme-files";
 
 const mockContractStrict: DocumentationContract = {
@@ -29,11 +30,13 @@ const mockContractMinimal: DocumentationContract = {
 describe("checkReadmeFiles", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.spyOn(saveCheckedReadmesModule, "saveCheckedReadmes").mockResolvedValue(
+      undefined,
+    );
   });
 
   describe("Success Scenarios & Order Preservation", () => {
-    it("returns results in the exact key insertion order regardless of async resolution speed", async () => {
-      // Simulate slow reading for the first file and fast reading for the second
+    it("returns results in the exact key insertion order regardless of async resolution speed and calls saveCheckedReadmes", async () => {
       vi.spyOn(filesModule, "readTextFileAsync").mockImplementation(
         async ({ filePath }) => {
           if (filePath.includes("first")) {
@@ -43,6 +46,8 @@ describe("checkReadmeFiles", () => {
           return "# Project Title\n\n## Quick Start\n\n## License";
         },
       );
+
+      const saveSpy = vi.spyOn(saveCheckedReadmesModule, "saveCheckedReadmes");
 
       const targets = {
         "./first/README.md": mockContractStrict,
@@ -57,14 +62,21 @@ describe("checkReadmeFiles", () => {
       expect(results[1].path).toBe("./second/README.md");
       expect(results[2].path).toBe("./third/README.md");
       expect(results.every((r) => r.result?.isValid === true)).toBe(true);
+
+      expect(saveSpy).toHaveBeenCalledTimes(1);
+      expect(saveSpy).toHaveBeenCalledWith(results);
     });
 
-    it("returns an empty array without calling readTextFileAsync when passed an empty object", async () => {
-      const spy = vi.spyOn(filesModule, "readTextFileAsync");
+    it("returns an empty array without calling readTextFileAsync when passed an empty object but still invokes saveCheckedReadmes", async () => {
+      const readSpy = vi.spyOn(filesModule, "readTextFileAsync");
+      const saveSpy = vi.spyOn(saveCheckedReadmesModule, "saveCheckedReadmes");
+
       const results = await checkReadmeFiles({});
 
       expect(results).toEqual([]);
-      expect(spy).not.toHaveBeenCalled();
+      expect(readSpy).not.toHaveBeenCalled();
+      expect(saveSpy).toHaveBeenCalledTimes(1);
+      expect(saveSpy).toHaveBeenCalledWith([]);
     });
 
     it("handles multiple targets running against different contract requirements", async () => {
@@ -95,10 +107,12 @@ describe("checkReadmeFiles", () => {
   });
 
   describe("AggregateError Aggregation & Error Filtering", () => {
-    it("throws an AggregateError with a single error when exactly one target fails", async () => {
+    it("throws an AggregateError with a single error when exactly one target fails and persists the results first", async () => {
       vi.spyOn(filesModule, "readTextFileAsync").mockResolvedValue(
         "# Project Title",
       ); // Fails strict contract
+
+      const saveSpy = vi.spyOn(saveCheckedReadmesModule, "saveCheckedReadmes");
 
       const targets = {
         "./README.md": mockContractStrict,
@@ -110,6 +124,8 @@ describe("checkReadmeFiles", () => {
       await expect(promise).rejects.toThrow(
         "README validation failed for 1 target(s).",
       );
+
+      expect(saveSpy).toHaveBeenCalledTimes(1);
 
       try {
         await promise;
