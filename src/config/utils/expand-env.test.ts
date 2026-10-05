@@ -1,11 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { expandEnv } from "./expand-env";
-import { initConfig, resetConfig } from "./init-helpers.test";
+import { initConfig } from "./init-helpers.test";
 
 describe("expandEnv", () => {
   beforeEach(initConfig);
 
-  afterEach(resetConfig);
+  afterEach(vi.unstubAllEnvs);
 
   it("should expand basic variable placeholders", () => {
     initConfig({

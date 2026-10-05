@@ -32,23 +32,13 @@ export function initConfig(
   }
 }
 
-/**
- * Restores process.env to its un-stubbed state.
- */
-export function resetConfig(): void {
-  vi.unstubAllEnvs();
-}
-
 describe("env resolution with central config setup", () => {
   beforeEach(() => {
     // Populate process.env with standard default test values
     initConfig();
   });
 
-  afterEach(() => {
-    // Clean up stubs so tests don't leak state into each other
-    resetConfig();
-  });
+  afterEach(vi.unstubAllEnvs);
 
   it("should initialize default baseline environment variables", () => {
     expect(process.env.CWD).toBe("test/workdir/");
@@ -97,7 +87,7 @@ describe("env resolution with central config setup", () => {
     });
     expect(process.env.TEMPORARY_VAR).toBe("temporary_value");
 
-    resetConfig();
+    vi.unstubAllEnvs();
 
     expect(stubSpy).toHaveBeenCalledTimes(1);
     expect(process.env.TEMPORARY_VAR).toBeUndefined();
