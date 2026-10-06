@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shutConsole } from "#/tests/console";
 import { config } from "@/config";
 import { saveComment } from "@/core/github";
+import * as checkedReadmesModule from "../checked-readmes";
 import { getErrorLogContent } from "../errors/get-error-log-content";
 import { SKIPPED_MESSAGE, SUCCESS_MESSAGE } from "./get-comment-body";
 import {
@@ -35,6 +36,7 @@ describe("postReadmeComment", () => {
     shutConsole();
 
     config.docs.hasRun = true;
+    vi.spyOn(checkedReadmesModule, "readCheckedReadmes").mockResolvedValue("");
   });
 
   describe("Documentation Check Ran (hasRun === true)", () => {
@@ -57,6 +59,7 @@ describe("postReadmeComment", () => {
 
     it("should save success message when getErrorLogContent returns null", async () => {
       vi.mocked(getErrorLogContent).mockResolvedValue(null);
+
       vi.mocked(saveComment).mockResolvedValue({} as never);
 
       await postReadmeComment();

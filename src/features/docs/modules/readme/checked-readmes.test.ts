@@ -1,5 +1,9 @@
 import { shutConsole } from "#/tests/console";
-import { createTextFileAsync, readTextFileAsync } from "@/shared/files";
+import {
+  createTextFileAsync,
+  isNotFoundError,
+  readTextFileAsync,
+} from "@/shared/files";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readCheckedReadmes, saveCheckedReadmes } from "./checked-readmes";
 import { CHECKED_READMES_LIST } from "./errors/config";
@@ -8,6 +12,7 @@ import type { FileValidationResult } from "./types";
 vi.mock("@/shared/files", () => ({
   createTextFileAsync: vi.fn(),
   readTextFileAsync: vi.fn(),
+  isNotFoundError: vi.fn(),
 }));
 
 vi.mock("./errors/config", () => ({
@@ -121,46 +126,50 @@ describe("readCheckedReadmes", () => {
     process.argv = originalArgv;
   });
 
-  it("should successfully read and return the content of the checked readmes file", async () => {
+  it("should successfully read and return the content of the checked readmes file with baseDir .dump", async () => {
     const mockContent = "# Checked Readmes\n\n(README.md)=✅\n";
     const readSpy = vi.mocked(readTextFileAsync).mockResolvedValue(mockContent);
 
     const result = await readCheckedReadmes();
 
     expect(readSpy).toHaveBeenCalledTimes(1);
-    expect(readSpy).toHaveBeenCalledWith({ filePath: CHECKED_READMES_LIST });
+    expect(readSpy).toHaveBeenCalledWith({
+      filePath: CHECKED_READMES_LIST,
+      baseDir: ".dump",
+    });
     expect(result).toBe(mockContent);
-    expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("should catch file system errors, log to console.error, and return an empty string when the file cannot be read", async () => {
+  it("should return an empty string when `isNotFoundError` returns true for the thrown error", async () => {
     const fileError = new Error("ENOENT: no such file or directory");
     const readSpy = vi.mocked(readTextFileAsync).mockRejectedValue(fileError);
+    vi.mocked(isNotFoundError).mockReturnValue(true);
 
     const result = await readCheckedReadmes();
 
     expect(readSpy).toHaveBeenCalledTimes(1);
-    expect(readSpy).toHaveBeenCalledWith({ filePath: CHECKED_READMES_LIST });
+    expect(readSpy).toHaveBeenCalledWith({
+      filePath: CHECKED_READMES_LIST,
+      baseDir: ".dump",
+    });
+    expect(isNotFoundError).toHaveBeenCalledWith(fileError);
     expect(result).toBe("");
-    expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith(
-      `Error reading checked readmes from ${CHECKED_READMES_LIST}:`,
-      fileError,
-    );
   });
 
-  it("should handle non-Error rejections gracefully, log them, and return an empty string", async () => {
-    const stringError = "Permission denied string error";
-    const readSpy = vi.mocked(readTextFileAsync).mockRejectedValue(stringError);
+  it("should rethrow the error when `isNotFoundError` returns false", async () => {
+    const permissionError = new Error("EACCES: permission denied");
+    const readSpy = vi
+      .mocked(readTextFileAsync)
+      .mockRejectedValue(permissionError);
+    vi.mocked(isNotFoundError).mockReturnValue(false);
 
-    const result = await readCheckedReadmes();
+    await expect(readCheckedReadmes()).rejects.toThrow(permissionError);
 
     expect(readSpy).toHaveBeenCalledTimes(1);
-    expect(result).toBe("");
-    expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith(
-      `Error reading checked readmes from ${CHECKED_READMES_LIST}:`,
-      stringError,
-    );
+    expect(readSpy).toHaveBeenCalledWith({
+      filePath: CHECKED_READMES_LIST,
+      baseDir: ".dump",
+    });
+    expect(isNotFoundError).toHaveBeenCalledWith(permissionError);
   });
 });

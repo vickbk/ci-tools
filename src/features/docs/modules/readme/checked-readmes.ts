@@ -1,4 +1,8 @@
-import { createTextFileAsync, readTextFileAsync } from "@/shared/files";
+import {
+  createTextFileAsync,
+  isNotFoundError,
+  readTextFileAsync,
+} from "@/shared/files";
 import { CHECKED_READMES_LIST } from "./errors/config";
 import { FileValidationResult } from "./types";
 
@@ -20,16 +24,19 @@ export async function saveCheckedReadmes(results: FileValidationResult[]) {
 
 /**
  * Reads the list of checked readmes from a file.
- * @returns A promise resolving to the content of the file or an empty string if an error occurs.
+ * @returns A promise resolving to the content of the file or an empty string if a not found error occurs.
+ * it throws any other errors encountered during the read operation.
  */
 export async function readCheckedReadmes(): Promise<string> {
   try {
-    return await readTextFileAsync({ filePath: CHECKED_READMES_LIST });
+    return await readTextFileAsync({
+      filePath: CHECKED_READMES_LIST,
+      baseDir: ".dump",
+    });
   } catch (error) {
-    console.error(
-      `Error reading checked readmes from ${CHECKED_READMES_LIST}:`,
-      error,
-    );
-    return "";
+    if (isNotFoundError(error)) {
+      return "";
+    }
+    throw error;
   }
 }
