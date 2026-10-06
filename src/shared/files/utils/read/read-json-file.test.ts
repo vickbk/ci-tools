@@ -114,6 +114,22 @@ describe("readJsonFile", () => {
         `[JSON Parse Error] Failed to parse JSON from "${filePath}":`,
       );
     });
+
+    it("should handle non-error parse failures gracefully", async () => {
+      const filePath = "weird.json";
+      vi.spyOn(readTextModule, "readTextFileAsync").mockResolvedValue(
+        "not a valid JSON",
+      );
+
+      vi.spyOn(JSON, "parse").mockImplementationOnce(() => {
+        throw "Unexpected token in JSON";
+      });
+
+      const promise = readJsonFile({ filePath });
+      await expect(promise).rejects.toThrow(
+        `[JSON Parse Error] Failed to parse JSON from "${filePath}":`,
+      );
+    });
   });
 
   describe("I/O Error Propagation", () => {

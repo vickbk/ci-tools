@@ -4,19 +4,19 @@ Establish automated guardrails that keep the README, API documentation, examples
 
 ### Phase 1: Core Documentation Guardrails
 
-- [ ] **Task 1 — Validate required README sections**
+- [x] **Task 1 — Validate required README sections**
 
-- **Status**: ⏳ Pending
+- **Status**: ✅ Done
 
-- **Target**: TBD
+- **Target**: 2026-10-05
 
 - **Description**: Ensure the README always contains the required documentation sections and prevents accidental removal of important package documentation.
 
 - **Steps**:
   - [x] Define the required README sections.
   - [x] Create an automated README section validator.
-  - [ ] Fail CI when a required section is missing.
-  - [ ] Add the validator to the documentation check command.
+  - [x] Fail CI when a required section is missing.
+  - [x] Add the validator to the documentation check command.
 
 - [ ] **Task 2 — Validate public entry points against the README**
 

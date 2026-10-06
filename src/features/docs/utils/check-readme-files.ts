@@ -2,6 +2,8 @@
 import { DocumentationContract } from "@/shared/types";
 import type { FileValidationResult } from "../modules/readme";
 import { checkReadmeFile } from "../modules/readme";
+import { saveCheckedReadmes } from "../modules/readme/checked-readmes";
+import { throwIfHasErrors } from "../modules/readme/errors/throw-if-has-errors";
 
 /**
  * Validates multiple README targets in parallel using a path-to-contract map.
@@ -19,16 +21,8 @@ export async function checkReadmeFiles(
     entries.map(([path, contract]) => checkReadmeFile({ path, contract })),
   );
 
-  const errors = results
-    .map((result) => result.error)
-    .filter((error): error is NonNullable<typeof error> => error !== undefined);
-
-  if (errors.length > 0) {
-    throw new AggregateError(
-      errors,
-      `README validation failed for ${errors.length} target(s).`,
-    );
-  }
+  await saveCheckedReadmes(results);
+  throwIfHasErrors(results);
 
   return results;
 }

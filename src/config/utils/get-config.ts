@@ -1,9 +1,9 @@
-import { Config } from "../types";
+import type { Config } from "../types";
 import { configSchema } from "./config-schema";
 
 let cachedConfig: Config | null = null;
 
-export type ConfigInput = {
+type ConfigInput = {
   /** Working directory used to resolve repository-relative paths. */
   cwd?: string;
   /** Environment object to validate instead of the live process environment. */

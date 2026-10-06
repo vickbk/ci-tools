@@ -6,13 +6,13 @@ import { getPathFlag } from "./get-path-flag";
 /**
  * Creates a text file asynchronously, creating parent directories as needed.
  *
- * @param options - File content, target path, and overwrite settings.
+ * @param options - File content, target path, base directory (defaults to `/.dump` so all created files are thrown there by default), and overwrite settings.
  * @returns A promise resolving to the absolute path of the created file.
  * @throws {Error} When the target path is outside the configured base directory
  * or the filesystem operation fails.
  * @example
  * ```ts
- * await createTextFileAsync({ filePath: "report.txt", content: "done" });
+ * await createTextFileAsync({ filePath: "report.txt", content: "done", base: ".dump" });
  * ```
  */
 export async function createTextFileAsync({

@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     setupFiles: ["./tests/setup.ts"],
     globals: true,
+    fsModuleCache: true,
     alias: {
       "@": path.resolve(import.meta.dirname, "./src/"),
       "#": path.resolve(import.meta.dirname, "./"),
