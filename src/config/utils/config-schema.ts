@@ -1,4 +1,4 @@
-import { normalizePath } from "@/shared/normalize-path";
+import { normalizePath } from "@/shared/files";
 import path from "node:path";
 import { z } from "zod";
 

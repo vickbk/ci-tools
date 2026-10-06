@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shutConsole } from "#/tests/console";
 import { config } from "@/config";
 import { resetConfig } from "@/config/testing";
-import { normalizePath } from "@/shared/normalize-path";
+import { normalizePath } from "@/shared/files";
 import { extractReleaseNotes } from "./extract-note";
 
 describe("extractReleaseNotes", async () => {

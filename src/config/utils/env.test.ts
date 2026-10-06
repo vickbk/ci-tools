@@ -1,4 +1,4 @@
-import { normalizePath } from "@/shared/normalize-path";
+import { normalizePath } from "@/shared/files";
 import process from "node:process";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Config } from "../types";
