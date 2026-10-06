@@ -1,8 +1,8 @@
 import { shutConsole } from "#/tests/console";
 import {
-  createTextFileAsync,
-  isNotFoundError,
-  readTextFileAsync,
+    createTextFileAsync,
+    isNotFoundError,
+    readTextFileAsync,
 } from "@/shared/files";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readCheckedReadmes, saveCheckedReadmes } from "./checked-readmes";
@@ -39,9 +39,9 @@ describe("saveCheckedReadmes", () => {
       const expectedContent = [
         "# Checked Readmes",
         "",
-        "README.md => ✅",
-        "packages/core/README.md => ❌",
-        "packages/utils/README.md => ✅",
+        "README.md ✅",
+        "packages/core/README.md ❌",
+        "packages/utils/README.md ✅",
         "",
       ].join("\n");
 
@@ -79,8 +79,8 @@ describe("saveCheckedReadmes", () => {
       const expectedContent = [
         "# Checked Readmes",
         "",
-        "README.md => ✅",
-        "CONTRIBUTING.md => ✅",
+        "README.md ✅",
+        "CONTRIBUTING.md ✅",
         "",
       ].join("\n");
 

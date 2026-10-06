@@ -12,7 +12,7 @@ import { FileValidationResult } from "./types";
  */
 export async function saveCheckedReadmes(results: FileValidationResult[]) {
   const files = results.map(
-    (result) => `${result.path} => ${result.error ? "❌" : "✅"}`,
+    (result) => `${result.path} ${result.error ? "❌" : "✅"}`,
   );
 
   const content = `# Checked Readmes\n\n${files.join("\n")}\n`;
