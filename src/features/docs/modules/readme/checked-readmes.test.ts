@@ -39,9 +39,9 @@ describe("saveCheckedReadmes", () => {
       const expectedContent = [
         "# Checked Readmes",
         "",
-        "(README.md) = ✅",
-        "(packages/core/README.md) = ❌",
-        "(packages/utils/README.md) = ✅",
+        "README.md => ✅",
+        "packages/core/README.md => ❌",
+        "packages/utils/README.md => ✅",
         "",
       ].join("\n");
 
@@ -79,8 +79,8 @@ describe("saveCheckedReadmes", () => {
       const expectedContent = [
         "# Checked Readmes",
         "",
-        "(README.md) = ✅",
-        "(CONTRIBUTING.md) = ✅",
+        "README.md => ✅",
+        "CONTRIBUTING.md => ✅",
         "",
       ].join("\n");
 

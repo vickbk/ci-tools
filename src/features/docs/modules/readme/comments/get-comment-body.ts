@@ -17,9 +17,7 @@ export const SKIPPED_MESSAGE =
  * @throws {Error} When the validation log cannot be read.
  */
 export async function getCommentBody(): Promise<string> {
-  if (config.docs.hasRun !== true) {
-    return SKIPPED_MESSAGE;
-  }
+  if (config.docs.hasRun !== true) return SKIPPED_MESSAGE;
 
   const message = (await getErrorLogContent()) ?? SUCCESS_MESSAGE;
   const checkedList = await readCheckedReadmes();

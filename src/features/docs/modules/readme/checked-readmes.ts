@@ -12,7 +12,7 @@ import { FileValidationResult } from "./types";
  */
 export async function saveCheckedReadmes(results: FileValidationResult[]) {
   const files = results.map(
-    (result) => `(${result.path}) = ${result.error ? "❌" : "✅"}`,
+    (result) => `${result.path} => ${result.error ? "❌" : "✅"}`,
   );
 
   const content = `# Checked Readmes\n\n${files.join("\n")}\n`;
@@ -34,9 +34,8 @@ export async function readCheckedReadmes(): Promise<string> {
       baseDir: ".dump",
     });
   } catch (error) {
-    if (isNotFoundError(error)) {
-      return "";
-    }
+    if (isNotFoundError(error)) return "";
+
     throw error;
   }
 }
