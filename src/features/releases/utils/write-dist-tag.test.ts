@@ -1,5 +1,5 @@
-import { shutConsole } from "#/tests/console";
 import * as githubEnvModule from "@/core/github";
+import { shutConsole } from "@vickbk/tests/vitest/console";
 import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as assertModule from "./assert-version";

@@ -1,5 +1,5 @@
-import { shutConsole } from "#/tests/console";
 import * as coverageModule from "@/core/github";
+import { shutConsole } from "@vickbk/tests/vitest/console";
 import fs from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

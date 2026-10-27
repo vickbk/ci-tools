@@ -1,9 +1,9 @@
 import process from "node:process";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#/tests/console";
 import * as errorsModule from "@/core/errors";
 import * as releasesModule from "@/features/releases";
+import { shutConsole } from "@vickbk/tests/vitest/console";
 
 describe("bin/extract-release-note entrypoint integration", () => {
   const originalArgv = [...process.argv];
