@@ -91,7 +91,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.4.1",
-    "@vickbk/tests": "0.2.0",
+    "@vickbk/tests": "^0.2.0",
     "@vitest/coverage-v8": "^5.0.0",
     "eslint": "^10.9.0",
     "eslint-import-resolver-typescript": "^4.4.5",
