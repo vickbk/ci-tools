@@ -1,9 +1,9 @@
-import { shutConsole } from "#/tests/console";
 import {
-    createTextFileAsync,
-    isNotFoundError,
-    readTextFileAsync,
+  createTextFileAsync,
+  isNotFoundError,
+  readTextFileAsync,
 } from "@/shared/files";
+import { shutConsole } from "@vickbk/tests/vitest/console";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readCheckedReadmes, saveCheckedReadmes } from "./checked-readmes";
 import { CHECKED_READMES_LIST } from "./errors/config";

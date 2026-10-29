@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { shutConsole } from "#/tests/console";
 import { config } from "@/config";
 import { saveComment } from "@/core/github";
+import { shutConsole } from "@vickbk/tests/vitest/console";
 import * as checkedReadmesModule from "../checked-readmes";
 import { getErrorLogContent } from "../errors/get-error-log-content";
 import { SKIPPED_MESSAGE, SUCCESS_MESSAGE } from "./get-comment-body";

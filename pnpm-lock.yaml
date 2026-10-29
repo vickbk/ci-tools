@@ -15,6 +15,9 @@ importers:
       '@types/node':
         specifier: ^26.4.1
         version: 26.6.5
+      '@vickbk/tests':
+        specifier: ^0.2.0
+        version: 0.2.0(vitest@5.0.5)
       '@vitest/coverage-v8':
         specifier: ^5.0.0
         version: 5.0.5(vitest@5.0.5)
@@ -720,6 +723,36 @@ packages:
     resolution: {integrity: sha512-nAB74NfSNKknqQ1RrYj6uz8FcXEomu/MATJZxh/x+BArzN2U3JbOYC0APYzUIGhVY3m5hRxA8VPNdPBoG8txlA==}
     cpu: [x64]
     os: [win32]
+
+  '@vickbk/tests@0.2.0':
+    resolution: {integrity: sha512-PrFOV6TF/SnJiLIHpRt3ovlOOptdBZc4c6oVrGYwkcnsYFhj4Fpy6vcrobVT7zja9XQiT3NVrowdnmSLPAXkfA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@playwright/test': ^1.64.1
+      '@testing-library/jest-dom': ^7.0.1
+      '@testing-library/react': ^16.0.0
+      '@testing-library/user-event': ^14.6.8
+      '@types/react': ^18.0.0 || ^19.0.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+      vitest: ^5.0.5
+    peerDependenciesMeta:
+      '@playwright/test':
+        optional: true
+      '@testing-library/jest-dom':
+        optional: true
+      '@testing-library/react':
+        optional: true
+      '@testing-library/user-event':
+        optional: true
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      vitest:
+        optional: true
 
   '@vitest/coverage-v8@5.0.5':
     resolution: {integrity: sha512-4KpkGdIrSqBihx/JyP/e+S+IKB98etg1XDQiLAxksLfcShnwi1VReGeOT9NI43hLHbknosKp/1CCLn9Zgcs8mg==}
@@ -2147,6 +2180,10 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
+
+  '@vickbk/tests@0.2.0(vitest@5.0.5)':
+    optionalDependencies:
+      vitest: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(tsx@4.23.15))
 
   '@vitest/coverage-v8@5.0.5(vitest@5.0.5)':
     dependencies:
