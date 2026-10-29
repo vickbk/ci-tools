@@ -16,7 +16,7 @@ importers:
         specifier: ^26.4.1
         version: 26.6.5
       '@vickbk/tests':
-        specifier: 0.2.0
+        specifier: ^0.2.0
         version: 0.2.0(vitest@5.0.5)
       '@vitest/coverage-v8':
         specifier: ^5.0.0
